@@ -117,26 +117,65 @@
 .whatsapp-btn:hover {
   background: #1ebe5d;
 }
+/* Nav actions: cart, user label and menu (aligned, compact badge) */
+.nav-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.cart-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+}
+.cart-badge {
+  background: #ff4d4d;
+  color: #fff;
+  border-radius: 50%;
+  min-width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  padding: 0 6px;
+}
+.nav-user {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+.menu-icon {
+  cursor: pointer;
+  width: 34px;
+  height: 34px;
+}
 </style>
 </head>
 <body>
     <div class="container">
         <div class="navbar">
        <div class="logo">
-        <a href="index.html"><img src="images/ImaraCommerce_logo_transparent.png" width="250px"></a>
+      <a href="index.html"><img src="images/ImaraCommerce_logo_transparent.png" width="150px"></a>
        </div>
        <nav>
         <ul id="MenuItems">
             <b><li><a href="index.html">Home</a></li></b>
-            <b><li><a href="products.html">Products</a></li></b>
+            <b><li><a href="products.html">Products</a></li>
             <b><li><a href="About.html">About</a></li></b>
             <b><li><a href="Userloginpage.html">Account</a></li></b>
-            <b><li><a href="popup.html">My orderDetails</a></li></b>
         </ul>
        </nav> 
-       <a href="Cart33.html" class="cart-icon">🛒 <span id="username"></span></a>
-        <span id="navUser" style="margin-left: 10px; font-weight: bold; color: #333;"></span>
-        <img src="images/icons8-menu-50.png" class="menu-icon" onclick="menutoggle()">
+        <div class="nav-actions">
+          <a href="Cart33.html" class="cart-icon" aria-label="Cart">
+            <img src="images/New cart icon.png" width="30" height="30" alt="Cart">
+            <span id="cartCount" class="cart-badge" aria-live="polite">0</span>
+          </a>
+          <span id="navUser" class="nav-user">Guest</span>
+          <img src="images/icons8-menu-50.png" class="menu-icon" onclick="menutoggle()" alt="Menu" />
     </div>
     </div> 
 <a href="https://wa.me/250781106751?text=Hello%20I%20want%20to%20ask%20about%20my%20order"

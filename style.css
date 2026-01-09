@@ -38,9 +38,8 @@ p{
 .container{
     max-width: 1300px;
     margin: auto;
-    padding-left: 25px;
-    padding-right: 25px;
-
+    padding-left: 10px;
+    padding-right: 10px;
 }
 .row{
     display: flex;
@@ -247,8 +246,8 @@ ul{
     text-align: center;
 }
 .menu-icon{
-    width: 28px;
-    margin-left: 20px;
+    width: 30px;
+    margin-top: 4px;
     display: none;
 }
 /*------------ media query for menu --------------*/
@@ -256,7 +255,7 @@ ul{
 
     nav ul{
         position: absolute;
-        top: 90px;
+        top: 115px;
         left: 0;
         background: #333;
         width: 100%;
