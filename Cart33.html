@@ -182,6 +182,37 @@
 .search-container button:hover {
   background: #218838;
 }
+.payment-box {
+  max-width: 400px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.payment-box input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.momo-btn {
+  width: 100%;
+  background: #ffcc00;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.momo-btn:hover {
+  background: #e6b800;
+}
+
 </style>
 </head>
 <body>
@@ -223,6 +254,36 @@
 <ul id="cartItems"></ul>
 <button class="place-order-btn" onclick="placeOrder()">Place Order</button>
 <p id="orderMsg"></p>
+<h3>Payment Method</h3>
+
+<div class="payment-box">
+  <label>
+    <input type="radio" name="payment" checked>
+    MTN Mobile Money
+  </label>
+
+  <input
+    type="tel"
+    id="momoNumber"
+    placeholder="Enter MTN number (07XXXXXXXX)"
+  >
+
+  <button class="momo-btn" onclick="payWithMoMo()">
+    Pay with MTN MoMo
+  </button>
+<p style="font-size:14px;color:#555;">
+  After completing MTN MoMo payment, click <b>Confirm via WhatsApp</b>
+  and send your transaction ID for verification.
+</p>
+
+  <p id="paymentMsg"></p>
+</div>
+<button class="whatsapp-order-btn" onclick="confirmPaymentWhatsApp()">
+  Confirm Payment via WhatsApp
+</button>
+
+
+
 
 <button class="whatsapp-order-btn" onclick="sendOrderToWhatsApp()">Send Order via WhatsApp</button>
 
@@ -241,8 +302,8 @@
 <div class="product">
 <a href="Pixium X5.html"><img src="images/pixiumx5.png" alt="Pixium X5"></a>
 <h4>Pixium X5</h4>
-<p>120,000 RWF</p>
-<button onclick="addToCart('Pixium X5', 120000)">Add to Cart</button>
+<p>20 RWF</p>
+<button onclick="addToCart('Pixium X5', 20)">Add to Cart</button>
 </div>
 <div class="product">
 <a href="Smart watch S1.html"><img src="images/smart watches S1.png" alt="Smart Watches S1"></a>
@@ -649,5 +710,202 @@ document.getElementById("globalSearch").addEventListener("keypress", function (e
   }
 });
 </script>
+<script>
+function payWithMoMo() {
+  const phone = document.getElementById("momoNumber").value.trim();
+  const msg = document.getElementById("paymentMsg");
+
+  if (!/^07[2389]\d{7}$/.test(phone)) {
+    msg.textContent = "❌ Enter a valid MTN number";
+    msg.style.color = "red";
+    return;
+  }
+
+  const user = localStorage.getItem("loggedInUser");
+  const cartKey = user ? `cart_${user}` : "guest_cart";
+  const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+
+  if (cart.length === 0) {
+    msg.textContent = "❌ Cart is empty";
+    msg.style.color = "red";
+    return;
+  }
+
+  const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+
+  // Save pending payment
+  let payments = JSON.parse(localStorage.getItem("payments")) || [];
+  payments.push({
+    ref: "MOMO-" + Date.now(),
+    phone,
+    amount: total,
+    items: cart,
+    status: "Pending",
+    date: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("payments", JSON.stringify(payments));
+
+  msg.textContent =
+    `📲 Payment request sent! 
+     Dial *182# → Approve payment of RWF ${total.toLocaleString()}`;
+  msg.style.color = "green";
+}
+</script>
+<script>
+function confirmPaymentWhatsApp() {
+  const user = localStorage.getItem("loggedInUser") || "Guest";
+  const cartKey = localStorage.getItem("loggedInUser")
+    ? `cart_${user}`
+    : "guest_cart";
+
+  const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+
+  if (cart.length === 0) {
+    alert("Your cart is empty");
+    return;
+  }
+
+  const phone = document.getElementById("momoNumber")?.value || "Not provided";
+
+  let message = `🧾 *PAYMENT CONFIRMATION*%0A`;
+  message += `👤 Name: ${user}%0A`;
+  message += `📱 MoMo Number: ${phone}%0A%0A`;
+  message += `🛒 *Order Details:*%0A`;
+
+  let total = 0;
+  cart.forEach(item => {
+    const subtotal = item.price * item.qty;
+    total += subtotal;
+    message += `• ${item.name} x ${item.qty} = ${subtotal.toLocaleString()} RWF%0A`;
+  });
+
+  message += `%0A💰 *Total Paid:* ${total.toLocaleString()} RWF%0A`;
+  message += `%0A📌 Transaction ID: ___________%0A`;
+  message += `%0A✅ I have completed the MTN MoMo payment.`;
+
+  window.open(
+    `https://wa.me/250781106751?text=${message}`,
+    "_blank"
+  );
+}
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCR-cbwXPSHW11_vPN6TnfkxphMJ2vMqAo",
+  authDomain: "imaracommerce.firebaseapp.com",
+  projectId: "imaracommerce",
+  storageBucket: "imaracommerce.firebasestorage.app",
+  messagingSenderId: "119240904494",
+  appId: "1:119240904494:web:01716f673c92e888bd34bf"
+};
+
+export const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+</script>
+<script type="module">
+import { db } from "./firebase.js";
+import { collection, addDoc, serverTimestamp }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+async function saveOrder(order) {
+  await addDoc(collection(db, "orders"), {
+    ...order,
+    status: "Pending",
+    createdAt: serverTimestamp()
+  });
+}
+</script>
+<script type="module">
+import { db } from "./firebase.js";
+import {
+  collection,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+async function placeOrder() {
+  const order = {
+    customerName: "John Doe",
+    phone: "+2507XXXXXXX",
+    items: [
+      { name: "Pixium X5", qty: 1, price: 159999 }
+    ],
+    total: 159999,
+    paymentMethod: "MTN MoMo",
+    status: "Pending",
+    createdAt: serverTimestamp()
+  };
+
+  try {
+    await addDoc(collection(db, "orders"), order);
+    alert("Order placed successfully");
+  } catch (error) {
+    alert("Failed to place order");
+  }
+}
+</script>
+<script type="module">
+import { db } from "./firebase.js";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const ordersTable = document.getElementById("ordersTable");
+
+const q = query(
+  collection(db, "orders"),
+  orderBy("createdAt", "desc")
+);
+
+onSnapshot(q, snapshot => {
+  ordersTable.innerHTML = "";
+
+  snapshot.forEach(doc => {
+    const order = doc.data();
+
+    ordersTable.innerHTML += `
+      <tr>
+        <td>${doc.id}</td>
+        <td>${order.customerName}</td>
+        <td>${order.total.toLocaleString()} RWF</td>
+        <td>${order.status}</td>
+        <td>
+          <button onclick="confirmOrder('${doc.id}')">
+            Confirm
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+});
+</script>
+<script type="module">
+import { db } from "./firebase.js";
+import {
+  doc,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+window.confirmOrder = async function (orderId) {
+  try {
+    await updateDoc(doc(db, "orders", orderId), {
+      status: "Confirmed"
+    });
+    alert("Order confirmed");
+  } catch (error) {
+    alert("Failed to update order");
+  }
+};
+</script>
+
 </body>
 </html>
