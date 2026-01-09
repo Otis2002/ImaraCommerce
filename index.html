@@ -199,25 +199,31 @@
 .search-container {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: 30px auto;
-  max-width: 400px;
-  position: relative;
+  gap: 8px;
+  max-width: 450px;
+  margin: 20px auto;
 }
 
 .search-container input {
-  width: 100%;
-  padding: 12px 40px 12px 15px;
-  border-radius: 30px;
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 25px;
   border: 1px solid #ccc;
-  font-size: 16px;
-  outline: none;
+  font-size: 15px;
 }
 
-.search-container i {
-  position: absolute;
-  right: 15px;
-  color: #888;
+.search-container button {
+  padding: 10px 18px;
+  border-radius: 25px;
+  border: none;
+  background: #28a745;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.search-container button:hover {
+  background: #218838;
 }
 
 </style>
@@ -312,12 +318,14 @@
 <div class="search-container">
   <input
     type="text"
-    id="searchInput"
-    placeholder="Search products..."
-    onkeyup="searchProducts()"
-  />
-  <i class="fa fa-search"></i>
+    id="globalSearch"
+    placeholder="Search products..."/>
+  <button onclick="runSearch()">Search</button>
 </div>
+
+</div>
+
+
 
 <hr>
 <h3>Products</h3>
@@ -785,15 +793,31 @@ video.play().catch(() => {
 });
 </script>
 <script>
-function searchProducts() {
-  const input = document.getElementById("searchInput").value.toLowerCase();
-  const products = document.querySelectorAll(".product");
+function handleSearch(e) {
+  if (e.key === "Enter") {
+    const query = document.getElementById("globalSearch").value.trim();
+    if (!query) return;
 
-  products.forEach(product => {
-    const title = product.querySelector("h4").textContent.toLowerCase();
-    product.style.display = title.includes(input) ? "inline-block" : "none";
-  });
+    localStorage.setItem("searchQuery", query);
+    window.location.href = "search.html";
+  }
 }
+</script>
+<script>
+function runSearch() {
+  const query = document.getElementById("globalSearch").value.trim();
+  if (!query) return;
+
+  localStorage.setItem("searchQuery", query);
+  window.location.href = "search.html";
+}
+
+// Allow Enter key too
+document.getElementById("globalSearch").addEventListener("keypress", function (e) {
+  if (e.key === "Enter") {
+    runSearch();
+  }
+});
 </script>
 
 </body>
