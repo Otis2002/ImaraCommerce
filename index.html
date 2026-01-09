@@ -196,6 +196,30 @@
     margin-top: 130px;
   }
 }
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 30px auto;
+  max-width: 400px;
+  position: relative;
+}
+
+.search-container input {
+  width: 100%;
+  padding: 12px 40px 12px 15px;
+  border-radius: 30px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+}
+
+.search-container i {
+  position: absolute;
+  right: 15px;
+  color: #888;
+}
+
 </style>
 </head>
 <body>  
@@ -285,6 +309,16 @@
 <button class="whatsapp-order-btn" onclick="sendOrderToWhatsApp()">Send Order via WhatsApp</button>
 
 <table>
+<div class="search-container">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Search products..."
+    onkeyup="searchProducts()"
+  />
+  <i class="fa fa-search"></i>
+</div>
+
 <hr>
 <h3>Products</h3>
 <div class="products-container">
@@ -750,5 +784,17 @@ video.play().catch(() => {
   console.log("Autoplay blocked, user interaction required");
 });
 </script>
+<script>
+function searchProducts() {
+  const input = document.getElementById("searchInput").value.toLowerCase();
+  const products = document.querySelectorAll(".product");
+
+  products.forEach(product => {
+    const title = product.querySelector("h4").textContent.toLowerCase();
+    product.style.display = title.includes(input) ? "inline-block" : "none";
+  });
+}
+</script>
+
 </body>
 </html>
