@@ -175,17 +175,6 @@ function deleteOrder(index) {
 
 loadOrders();
 </script>
-<script type="module">
-import { db } from "./firebase.js";
-import { collection, onSnapshot }
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-onSnapshot(collection(db, "orders"), snapshot => {
-  snapshot.forEach(doc => {
-    console.log(doc.id, doc.data());
-  });
-});
-</script>
 
 </body>
 </html>

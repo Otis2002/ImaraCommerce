@@ -800,22 +800,4 @@ document.getElementById("globalSearch").addEventListener("keypress", function (e
 });
 </script>
 </body>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCR-cbwXPSHW11_vPN6TnfkxphMJ2vMqAo",
-  authDomain: "imaracommerce.firebaseapp.com",
-  projectId: "imaracommerce",
-  storageBucket: "imaracommerce.firebasestorage.app",
-  messagingSenderId: "119240904494",
-  appId: "1:119240904494:web:01716f673c92e888bd34bf"
-};
-
-export const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-</script>
 </html>

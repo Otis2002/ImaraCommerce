@@ -216,6 +216,23 @@
 </style>
 </head>
 <body>
+  <!-- NETLIFY ORDER FORM (hidden) -->
+<form
+  name="orders"
+  method="POST"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  hidden
+>
+  <input type="hidden" name="form-name" value="orders" />
+  <input type="hidden" name="user" />
+  <input type="hidden" name="items" />
+  <input type="hidden" name="total" />
+  <input type="hidden" name="payment_method" />
+  <input type="hidden" name="phone" />
+  <input type="hidden" name="date" />
+</form>
+
     <div class="container">
         <div class="navbar">
        <div class="logo">
@@ -571,7 +588,7 @@
 }
 </script>
 <script>
-  function placeOrder() {
+function placeOrder() {
   const user = localStorage.getItem("loggedInUser");
   if (!user) {
     alert("Please login to place an order");
@@ -582,16 +599,11 @@
   const cartKey = `cart_${user}`;
   let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
 
-  // Merge guest cart if exists
   const guestCart = JSON.parse(localStorage.getItem("guest_cart")) || [];
   if (guestCart.length > 0) {
-    guestCart.forEach(guestItem => {
-      const existing = cart.find(item => item.name === guestItem.name);
-      if (existing) {
-        existing.qty += guestItem.qty;
-      } else {
-        cart.push(guestItem);
-      }
+    guestCart.forEach(g => {
+      const found = cart.find(i => i.name === g.name);
+      found ? (found.qty += g.qty) : cart.push(g);
     });
     localStorage.removeItem("guest_cart");
     localStorage.setItem(cartKey, JSON.stringify(cart));
@@ -602,34 +614,40 @@
     return;
   }
 
-  const total = cart.reduce(
-    (sum, item) => sum + item.price * item.qty,
-    0
-  );
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
 
-  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+  /* 🔹 SUBMIT TO NETLIFY */
+  const form = document.querySelector("form[name='orders']");
 
-  orders.push({
-    orderId: "ORD-" + Date.now(),
-    username: user,
-    items: cart,
-    total: total,
-    date: new Date().toLocaleString(),
-    status: "Pending"
+  form.user.value = user;
+  form.items.value = JSON.stringify(cart);
+  form.total.value = total;
+  form.payment_method.value = "MTN MoMo";
+  form.phone.value = document.getElementById("momoNumber")?.value || "N/A";
+  form.date.value = new Date().toLocaleString();
+
+  fetch("/", {
+    method: "POST",
+    body: new FormData(form)
+  })
+  .then(() => {
+    localStorage.removeItem(cartKey);
+    updateCartCount();
+    renderCart();
+
+    document.getElementById("orderMsg").textContent =
+      "✅ Order received! We will confirm shortly.";
+
+    setTimeout(() => {
+      window.location.href = "popup.html";
+    }, 1500);
+  })
+  .catch(() => {
+    alert("❌ Failed to submit order. Try again.");
   });
-
-  localStorage.setItem("orders", JSON.stringify(orders));
-  localStorage.removeItem(cartKey);
-
-  updateCartCount();
-  renderCart();
-
-  document.getElementById("orderMsg").textContent = "✅ Order placed successfully! Redirecting...";
-  setTimeout(() => {
-    window.location.href = "popup.html";
-  }, 2000);
 }
 </script>
+
 <script>
 function logout() {
   localStorage.removeItem("loggedInUser");
@@ -748,7 +766,7 @@ function payWithMoMo() {
 
   msg.textContent =
     `📲 Payment request sent! 
-     Dial *182# → Approve payment of RWF ${total.toLocaleString()}`;
+     Dial *182*8*1*1946159# Iradukunda JACQUES → Approve payment of RWF ${total.toLocaleString()}`;
   msg.style.color = "green";
 }
 </script>
@@ -789,122 +807,6 @@ function confirmPaymentWhatsApp() {
     "_blank"
   );
 }
-</script>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCR-cbwXPSHW11_vPN6TnfkxphMJ2vMqAo",
-  authDomain: "imaracommerce.firebaseapp.com",
-  projectId: "imaracommerce",
-  storageBucket: "imaracommerce.firebasestorage.app",
-  messagingSenderId: "119240904494",
-  appId: "1:119240904494:web:01716f673c92e888bd34bf"
-};
-
-export const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-</script>
-<script type="module">
-import { db } from "./firebase.js";
-import { collection, addDoc, serverTimestamp }
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-async function saveOrder(order) {
-  await addDoc(collection(db, "orders"), {
-    ...order,
-    status: "Pending",
-    createdAt: serverTimestamp()
-  });
-}
-</script>
-<script type="module">
-import { db } from "./firebase.js";
-import {
-  collection,
-  addDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-async function placeOrder() {
-  const order = {
-    customerName: "John Doe",
-    phone: "+2507XXXXXXX",
-    items: [
-      { name: "Pixium X5", qty: 1, price: 159999 }
-    ],
-    total: 159999,
-    paymentMethod: "MTN MoMo",
-    status: "Pending",
-    createdAt: serverTimestamp()
-  };
-
-  try {
-    await addDoc(collection(db, "orders"), order);
-    alert("Order placed successfully");
-  } catch (error) {
-    alert("Failed to place order");
-  }
-}
-</script>
-<script type="module">
-import { db } from "./firebase.js";
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-const ordersTable = document.getElementById("ordersTable");
-
-const q = query(
-  collection(db, "orders"),
-  orderBy("createdAt", "desc")
-);
-
-onSnapshot(q, snapshot => {
-  ordersTable.innerHTML = "";
-
-  snapshot.forEach(doc => {
-    const order = doc.data();
-
-    ordersTable.innerHTML += `
-      <tr>
-        <td>${doc.id}</td>
-        <td>${order.customerName}</td>
-        <td>${order.total.toLocaleString()} RWF</td>
-        <td>${order.status}</td>
-        <td>
-          <button onclick="confirmOrder('${doc.id}')">
-            Confirm
-          </button>
-        </td>
-      </tr>
-    `;
-  });
-});
-</script>
-<script type="module">
-import { db } from "./firebase.js";
-import {
-  doc,
-  updateDoc
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-window.confirmOrder = async function (orderId) {
-  try {
-    await updateDoc(doc(db, "orders", orderId), {
-      status: "Confirmed"
-    });
-    alert("Order confirmed");
-  } catch (error) {
-    alert("Failed to update order");
-  }
-};
 </script>
 
 </body>
