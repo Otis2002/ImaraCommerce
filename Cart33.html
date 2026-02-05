@@ -12,6 +12,451 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
+/* ========== CART STYLING ========== */
+.cart-container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 3px solid #667eea;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.cart-header h2 {
+  color: #111827;
+  font-size: 2em;
+  margin: 0;
+}
+
+.cart-status {
+  font-size: 14px;
+  color: #666;
+  background: #f0f4ff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.loyalty-points-badge {
+  font-size: 14px;
+  color: #ff9800;
+  background: #fff3e0;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.loyalty-points-badge:before {
+  content: "⭐";
+  font-size: 1.2em;
+}
+
+.cart-items-wrapper {
+  margin-bottom: 30px;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1.5fr 1fr;
+  gap: 15px;
+  align-items: center;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+  border-left: 4px solid #667eea;
+}
+
+.cart-item:hover {
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
+  transform: translateX(5px);
+}
+
+.cart-item-name {
+  font-weight: 600;
+  color: #111827;
+  font-size: 1.05em;
+  word-break: break-word;
+}
+
+.cart-item-price {
+  color: #667eea;
+  font-weight: 700;
+  font-size: 1.1em;
+}
+
+.cart-item-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-btn {
+  background: white;
+  border: 2px solid #667eea;
+  color: #667eea;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.qty-btn:hover {
+  background: #667eea;
+  color: white;
+  transform: scale(1.1);
+}
+
+.qty-display {
+  min-width: 30px;
+  text-align: center;
+  font-weight: 600;
+  color: #333;
+}
+
+.cart-item-subtotal {
+  text-align: right;
+  font-weight: 700;
+  color: #28a745;
+  font-size: 1.1em;
+}
+
+.cart-item-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.remove-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.remove-btn:hover {
+  background: #c82333;
+  transform: scale(1.05);
+}
+
+/* ========== CART SUMMARY ========== */
+.cart-summary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 25px;
+  border-radius: 12px;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 15px;
+}
+
+.summary-row.total {
+  border-top: 2px solid rgba(255,255,255,0.3);
+  padding-top: 15px;
+  font-size: 1.4em;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+/* ========== ACTION BUTTONS ========== */
+.cart-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.action-btn {
+  padding: 16px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.btn-checkout {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  grid-column: 1/-1;
+}
+
+.btn-checkout:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-continue {
+  background: #e9ecef;
+  color: #333;
+}
+
+.btn-continue:hover {
+  background: #d1d5db;
+}
+
+.empty-cart {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.empty-cart-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+}
+
+.empty-cart h3 {
+  color: #666;
+  font-size: 1.5em;
+  margin-bottom: 15px;
+}
+
+.empty-cart p {
+  color: #999;
+  margin-bottom: 30px;
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+@media (max-width: 1024px) {
+  .cart-item {
+    grid-template-columns: 1.5fr 1fr 1.2fr 1fr;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .cart-header h2 {
+    font-size: 1.7em;
+  }
+}
+
+@media (max-width: 768px) {
+  .cart-container {
+    padding: 15px;
+    margin: 20px auto;
+  }
+
+  .cart-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .cart-header h2 {
+    font-size: 1.5em;
+  }
+
+  .cart-status {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+
+  /* Stack cart items vertically on tablet */
+  .cart-item {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .cart-item-name {
+    grid-column: 1;
+    font-size: 1em;
+  }
+
+  .cart-item-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    grid-column: 1;
+  }
+
+  .cart-item-price {
+    font-size: 1em;
+  }
+
+  .cart-item-controls {
+    grid-column: 1;
+    justify-content: flex-start;
+  }
+
+  .cart-item-subtotal {
+    text-align: left;
+  }
+
+  .cart-item-actions {
+    grid-column: 1;
+    justify-content: flex-start;
+  }
+
+  .qty-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .cart-summary {
+    padding: 20px;
+  }
+
+  .summary-row {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .summary-row.total {
+    font-size: 1.2em;
+  }
+
+  .cart-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .action-btn {
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+
+  .btn-checkout {
+    grid-column: 1;
+  }
+
+  .remove-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .empty-cart {
+    padding: 40px 20px;
+  }
+
+  .empty-cart-icon {
+    font-size: 60px;
+  }
+
+  .empty-cart h3 {
+    font-size: 1.3em;
+  }
+
+  .empty-cart p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cart-container {
+    padding: 12px;
+    margin: 15px auto;
+  }
+
+  .cart-header h2 {
+    font-size: 1.3em;
+  }
+
+  .cart-item {
+    gap: 10px;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+
+  .cart-item-name {
+    font-size: 0.95em;
+  }
+
+  .cart-item-price {
+    font-size: 1em;
+  }
+
+  .cart-item-subtotal {
+    font-size: 1em;
+  }
+
+  .qty-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 13px;
+  }
+
+  .qty-display {
+    font-size: 14px;
+  }
+
+  .cart-summary {
+    padding: 15px;
+  }
+
+  .summary-row {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .summary-row.total {
+    font-size: 1.1em;
+  }
+
+  .action-btn {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+
+  .remove-btn {
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+
+  .empty-cart {
+    padding: 30px 15px;
+  }
+
+  .empty-cart-icon {
+    font-size: 50px;
+  }
+
+  .empty-cart h3 {
+    font-size: 1.1em;
+  }
+}
+
+/* ========== PRODUCT CARDS ========== */
 .product {
   display: inline-block;
   width: 200px;
@@ -145,8 +590,9 @@
 }
 .nav-user {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0;
   color: #333;
+  display: none;
 }
 .menu-icon {
   cursor: pointer;
@@ -213,6 +659,72 @@
   background: #e6b800;
 }
 
+.login-status {
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.login-status.logged-in {
+  color: #28a745; /* green */
+}
+
+.login-status.guest {
+  color: #dc3545; /* red */
+}
+.order-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  background: #fafafa;
+}
+
+.order-status {
+  font-weight: bold;
+}
+
+.status-Pending { color: orange; }
+.status-Paid { color: green; }
+.status-Delivered { color: #007bff; }
+.autocomplete-box {
+  position: absolute;
+  background: #fff;
+  width: 100%;
+  max-width: 320px;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  margin-top: 5px;
+  z-index: 1000;
+  overflow: hidden;
+  display: none;
+}
+
+.autocomplete-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.2s;
+}
+
+.autocomplete-item:hover {
+  background: #f5f5f5;
+}
+
+.autocomplete-item img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.autocomplete-item span {
+  font-size: 14px;
+  font-weight: 500;
+}
+
 </style>
 </head>
 <body>
@@ -227,6 +739,7 @@
             <b><li><a href="products.html">Products</a></li>
             <b><li><a href="About.html">About</a></li></b>
             <b><li><a href="Userloginpage.html">Account</a></li></b>
+            <b><li><a href="order-history.html">My Order</a></li></b>
         </ul>
        </nav> 
         <div class="nav-actions">
@@ -234,10 +747,22 @@
             <img src="images/New cart icon.png" width="30" height="30" alt="Cart">
             <span id="cartCount" class="cart-badge" aria-live="polite">0</span>
           </a>
-          <span id="navUser" class="nav-user">Guest</span>
+<span id="navUser" class="nav-user">Guest</span>
+<span id="loginStatus" class="login-status"></span>
+
           <img src="images/icons8-menu-50.png" class="menu-icon" onclick="menutoggle()" alt="Menu" />
     </div>
     </div> 
+<div class="search-container">
+  <input
+    type="text"
+    id="globalSearch"
+    placeholder="Search products..."
+    autocomplete="off"
+/>
+</div>
+
+<div id="autocompleteBox" class="autocomplete-box"></div>    
 <a href="https://wa.me/250781106751?text=Hello%20I%20want%20to%20ask%20about%20my%20order"
    target="_blank"
    class="whatsapp-btn">
@@ -246,151 +771,64 @@
 <div class="account-page">
 <div class="container">
   <div class="col-1">
-<h2>Welcome, <span id="user"></span><br>
+<h2>Welcome <span id="user"></span><br>
 <button onclick="logout()" style="background-color: #ff4d4d; color: white; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px; margin-top: 10px;">Logout</button>
-<h2>Your Cart</h2>
-<ul id="cartList"></ul>
-<p><strong>Total:</strong> <span id="total">0</span> RWF </p>
-<ul id="cartItems"></ul>
-<button class="place-order-btn" onclick="placeOrder()">Place Order</button>
-<p id="orderMsg"></p>
-<h3>Payment Method</h3>
 
-<div class="payment-box">
-  <label>
-    <input type="radio" name="payment" checked>
-    MTN Mobile Money
-  </label>
+<div class="cart-container">
+  <div class="cart-header">
+    <h2>🛒 Your Shopping Cart</h2>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <span class="cart-status" id="cartItemCount">0 items</span>
+      <span class="loyalty-points-badge" id="loyaltyPointsBadge" style="display: none;">0 Points</span>
+    </div>
+  </div>
 
-  <input
-    type="tel"
-    id="momoNumber"
-    placeholder="Enter MTN number (07XXXXXXXX)"
-  >
+  <div id="emptyCartMessage" class="empty-cart" style="display: none;">
+    <div class="empty-cart-icon">🛍️</div>
+    <h3>Your cart is empty</h3>
+    <p>Start shopping to add items to your cart</p>
+    <a href="products.html" class="action-btn btn-continue">Continue Shopping</a>
+  </div>
 
-  <button class="momo-btn" onclick="payWithMoMo()">
-    Pay with MTN MoMo
-  </button>
-<p style="font-size:14px;color:#555;">
-  After completing MTN MoMo payment, click <b>Confirm via WhatsApp</b>
-  and send your transaction ID for verification.
-</p>
+  <div id="cartItemsContainer" class="cart-items-wrapper"></div>
 
-  <p id="paymentMsg"></p>
-</div>
-<button class="whatsapp-order-btn" onclick="confirmPaymentWhatsApp()">
-  Confirm Payment via WhatsApp
-</button>
-
-
-
-
-<button class="whatsapp-order-btn" onclick="sendOrderToWhatsApp()">Send Order via WhatsApp</button>
-
-<div class="search-container">
-  <input
-    type="text"
-    id="globalSearch"
-    placeholder="Search products..."/>
-  <button onclick="runSearch()">Search</button>
-</div>
-
-<table>
-<hr>
-<h3>Products</h3>
-<div class="products-container">
-<div class="product">
-<a href="Pixium X5.html"><img src="images/pixiumx5.png" alt="Pixium X5"></a>
-<h4>Pixium X5</h4>
-<p>20 RWF</p>
-<button onclick="addToCart('Pixium X5', 20)">Add to Cart</button>
-</div>
-<div class="product">
-<a href="Smart watch S1.html"><img src="images/smart watches S1.png" alt="Smart Watches S1"></a>
-<h4>Smart Watches S1</h4>
-<p>160,000 RWF</p>
-<button onclick="addToCart('Smart Watches S1', 160000)">Add to Cart</button>
-</div>
-<div class="product">
-<a href="Smart watch S2.html"><img src="images/SmartWatch Series 2.png" alt="SmartWatch Series 2"></a>
-<h4>SmartWatch Series 2</h4>
-<p>200,000 RWF</p>
-<button onclick="addToCart('SmartWatch Series 2', 200000)">Add to Cart</button>
-</div>
-<div class="product">
-<a href="Earbuds PM9.html"><img src="images/Earbuds PM9.png" alt="Earbuds PM9"></a>
-<h4>Earbuds PM9</h4>
-<p>25,000 RWF</p>
-<button onclick="addToCart('Earbuds PM9', 25000)">Add to Cart</button>
-</div>
-</div>
-<hr>
-<div class="products-container">
-<div class="product">
-<a href="Product details 4.html"><img src="images/pixiumx5.png" alt="Pixium X5"></a>
-<h4>Pixium X5</h4>
-<p>120,000 RWF</p>
-<button onclick="addToCart('Pixium X5', 120000)">Add to Cart</button>
-</div>
-<div class="product">
-<a href="Product details 5.html"><img src="images/smart watches S1.png" alt="Smart Watches S1"></a>
-<h4>Smart Watches S1</h4>
-<p>160,000 RWF</p>
-<button onclick="addToCart('Smart Watches S1', 160000)">Add to Cart</button>
-</div>
-<div class="product">
-<a href="Product details 6.html"><img src="images/SmartWatch Series 2.png" alt="SmartWatch Series 2"></a>
-<h4>SmartWatch Series 2</h4>
-<p>200,000 RWF</p>
-<button onclick="addToCart('SmartWatch Series 2', 200000)">Add to Cart</button>
-</div>
-<div class="product">
-<a href="Product details 7.html"><img src="images/Earbuds PM9.png" alt="Earbuds PM9"></a>
-<h4>Earbuds PM9</h4>
-<p>25,000 RWF</p>
-<button onclick="addToCart('Earbuds PM9', 25000)">Add to Cart</button>
-</div>
-</div>
-<hr>
-<div class="products-container">
-<div class="product">
-<a href="Product details 8.html"><img src="images/pixiumx5.png" alt="Pixium X5"></a>
-<h4>Pixium X5</h4>
-<p>120,000 RWF</p>
-<button onclick="addToCart('Pixium X5', 120000)">Add to Cart</button>
-</div>
-<div class="product">
-<a href="Product details 9.html"><img src="images/smart watches S1.png" alt="Smart Watches S1"></a>
-<h4>Smart Watches S1</h4>
-<p>160,000 RWF</p>
-<button onclick="addToCart('Smart Watches S1', 160000)">Add to Cart</button>
-</div>
-<div class="product">
-<a href="Product details 10.html"><img src="images/SmartWatch Series 2.png" alt="SmartWatch Series 2"></a>
-<h4>SmartWatch Series 2</h4>
-<p>200,000 RWF</p>
-<button onclick="addToCart('SmartWatch Series 2', 200000)">Add to Cart</button>
-</div>
-<div class="product">
-<a href="Product details 11.html"><img src="images/Earbuds PM9.png" alt="Earbuds PM9"></a>
-<h4>Earbuds PM9</h4>
-<p>25,000 RWF</p>
-<button onclick="addToCart('Earbuds PM9', 25000)">Add to Cart</button>
-</div>
-</div>
- <div class="page-btn">
-        <span><a href="Cart33.html">1</a></span>
-        <span><a href="cart NEXT 1.html">2</a></span>
-        <span><a href="cart NEXT 2.html">3</a></span>
-        <span><a href="cart NEXT 3.html">4</a></span>
-        <span><a href="cart NEXT 4.html">&#8594;</a></span>
+  <div id="cartSummarySection" style="display: none;">
+    <div class="cart-summary">
+      <div class="summary-row">
+        <span>Subtotal:</span>
+        <span id="subtotal">0 RWF</span>
+      </div>
+      <div class="summary-row">
+        <span>Shipping:</span>
+        <span>Free</span>
+      </div>
+      <div class="summary-row total">
+        <span>Total:</span>
+        <span id="totalAmount">0 RWF</span>
+      </div>
     </div>
 
-</h2>
+    <div class="cart-actions">
+      <button class="action-btn btn-continue" onclick="window.location.href='products.html'">← Continue Shopping</button>
+      <button class="action-btn btn-checkout" onclick="placeOrder()">Proceed to Checkout →</button>
+    </div>
+  </div>
 </div>
-</div>
-</div>
-</table>
+
+<p id="orderMsg"></p>
+<hr>
+
+
+
+
+<div id="orderHistory" style="display:none;"></div>
+
+
+
+
+
+
+
 
 <!------------ footer ---------->
 <h3>Contact Us</h3>
@@ -404,7 +842,7 @@
 </p>
 
 <p>📧 Email:
-  <a href="mailto:iradukundajacques500@gmail.com">iradukundajacques500@gmail.com</a>
+  <a href="mailto:imaracommerce.com">imaracommerce.com</a>
 </p>
     <div class="footer">
         <div class="container">
@@ -419,7 +857,7 @@
               </div>
               <div class="footer-col-2">
                <img src="images/ImaraCommerce_logo_transparent.png" width="100%">
-                <p>Our purpose is to sustainably make the pleasure and benefits of electronics and agriculture tools to be accessible to all</p>
+               <p>Our purpose is to sustainably make the pleasure and powering online businesses with fast and reliable commerce tools.</p>
               </div>
               <div class="footer-col-3">
                 <h3>Follow Us</h3>
@@ -464,7 +902,7 @@
 </script>
 <script>
   function getCartKey() {
-    const user = localStorage.getItem("loggedInUser");
+    const user = localStorage.getItem("loggedInUserId");
     return user ? `cart_${user}` : null;
   }
 </script>
@@ -475,15 +913,40 @@
   }
 </script>
 <script>
-  // Set username on page load
-  document.addEventListener("DOMContentLoaded", function() {
-    const loggedInUser = localStorage.getItem("loggedInUser");
-    const displayUser = loggedInUser || "Guest";
-    document.getElementById("user").textContent = displayUser;
-    document.getElementById("navUser").textContent = `Hello, ${displayUser}`;
-    renderCart();
-    updateCartCount();
-  });
+document.addEventListener("DOMContentLoaded", function() {
+  const loggedInUser = localStorage.getItem("loggedInUserId");
+  const navUser = document.getElementById("navUser");
+  const status = document.getElementById("loginStatus");
+
+  if (loggedInUser) {
+    navUser.textContent = `Hello, ${loggedInUser}`;
+    status.textContent = "🟢 Logged in";
+    status.className = "login-status logged-in";
+    // Load and display loyalty points
+    loadLoyaltyPoints(loggedInUser);
+  } else {
+    navUser.textContent = "Guest";
+    status.textContent = "🔴 Guest";
+    status.className = "login-status guest";
+    // Hide loyalty points for guests
+    document.getElementById("loyaltyPointsBadge").style.display = "none";
+  }
+
+  renderCart();
+  updateCartCount();
+});
+
+async function loadLoyaltyPoints(username) {
+  try {
+    const res = await fetch(`http://localhost:8000/loyalty-points/${encodeURIComponent(username)}`);
+    const data = await res.json();
+    const badge = document.getElementById("loyaltyPointsBadge");
+    badge.textContent = `${data.points} Points`;
+    badge.style.display = "flex";
+  } catch (err) {
+    console.error("Error loading loyalty points:", err);
+  }
+}
 </script>
 <script>
   function addToCart(name, price) {
@@ -521,28 +984,57 @@
 <script>
   function renderCart() {
   const cartKey = getCartKey() || "guest_cart";
-
   const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
-  const cartList = document.getElementById("cartItems");
-  const totalEl = document.getElementById("total");
+  const container = document.getElementById("cartItemsContainer");
+  const emptyMessage = document.getElementById("emptyCartMessage");
+  const summarySection = document.getElementById("cartSummarySection");
+  const cartStatus = document.getElementById("cartItemCount");
 
-  cartList.innerHTML = "";
+  container.innerHTML = "";
   let total = 0;
 
-  cart.forEach((item, index) => {
-    total += item.price * item.qty;
+  if (cart.length === 0) {
+    emptyMessage.style.display = "block";
+    summarySection.style.display = "none";
+    cartStatus.textContent = "0 items";
+    return;
+  }
 
-    cartList.innerHTML += `
-      <li>
-        ${item.name} - ${item.qty} × ${item.price.toLocaleString()} RWF
-        <button onclick="changeQty(${index}, -1)">➖</button>
-        <button onclick="changeQty(${index}, 1)">➕</button>
-        <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
-      </li>
+  emptyMessage.style.display = "none";
+  summarySection.style.display = "block";
+
+  cart.forEach((item, index) => {
+    const subtotal = item.price * item.qty;
+    total += subtotal;
+
+    container.innerHTML += `
+      <div class="cart-item">
+        <div class="cart-item-name">
+          ${item.name}
+        </div>
+        <div class="cart-item-price">
+          ${item.price.toLocaleString()} RWF
+        </div>
+        <div class="cart-item-controls">
+          <button class="qty-btn" onclick="changeQty(${index}, -1)">−</button>
+          <span class="qty-display">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <div class="cart-item-subtotal">
+            ${subtotal.toLocaleString()} RWF
+          </div>
+          <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+        </div>
+      </div>
     `;
   });
 
-  totalEl.textContent = total.toLocaleString();
+  // Update totals
+  const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+  cartStatus.textContent = `${totalQty} item${totalQty !== 1 ? 's' : ''}`;
+  document.getElementById("subtotal").textContent = total.toLocaleString() + " RWF";
+  document.getElementById("totalAmount").textContent = total.toLocaleString() + " RWF";
 }
 </script>
 <script>
@@ -570,9 +1062,11 @@
   updateCartCount();
 }
 </script>
+
+
 <script>
-  function placeOrder() {
-  const user = localStorage.getItem("loggedInUser");
+function placeOrder() {
+  const user = localStorage.getItem("loggedInUserId");
   if (!user) {
     alert("Please login to place an order");
     window.location.href = "Userloginpage.html";
@@ -582,64 +1076,30 @@
   const cartKey = `cart_${user}`;
   let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
 
-  // Merge guest cart if exists
-  const guestCart = JSON.parse(localStorage.getItem("guest_cart")) || [];
-  if (guestCart.length > 0) {
-    guestCart.forEach(guestItem => {
-      const existing = cart.find(item => item.name === guestItem.name);
-      if (existing) {
-        existing.qty += guestItem.qty;
-      } else {
-        cart.push(guestItem);
-      }
-    });
-    localStorage.removeItem("guest_cart");
-    localStorage.setItem(cartKey, JSON.stringify(cart));
-  }
-
   if (cart.length === 0) {
     alert("Your cart is empty");
     return;
   }
 
-  const total = cart.reduce(
-    (sum, item) => sum + item.price * item.qty,
-    0
-  );
+  // Save cart temporarily for checkout
+  localStorage.setItem("pendingOrder", JSON.stringify(cart));
 
-  let orders = JSON.parse(localStorage.getItem("orders")) || [];
-
-  orders.push({
-    orderId: "ORD-" + Date.now(),
-    username: user,
-    items: cart,
-    total: total,
-    date: new Date().toLocaleString(),
-    status: "Pending"
-  });
-
-  localStorage.setItem("orders", JSON.stringify(orders));
-  localStorage.removeItem(cartKey);
-
-  updateCartCount();
-  renderCart();
-
-  document.getElementById("orderMsg").textContent = "✅ Order placed successfully! Redirecting...";
-  setTimeout(() => {
-    window.location.href = "popup.html";
-  }, 2000);
+  // Redirect to checkout page
+  window.location.href = "checkout.html";
 }
 </script>
+
+
+
 <script>
 function logout() {
-  localStorage.removeItem("loggedInUser");
-  alert("You have been logged out.");
+  localStorage.removeItem("loggedInUserId");
   window.location.href = "index.html";
 }
 </script>
 <script>
 function sendOrderToWhatsApp() {
-  const currentUser = localStorage.getItem("loggedInUser");
+  const currentUser = localStorage.getItem("loggedInUserId");
   if (!currentUser) {
     alert("Please login to send order via WhatsApp");
     window.location.href = "Userloginpage.html";
@@ -721,7 +1181,7 @@ function payWithMoMo() {
     return;
   }
 
-  const user = localStorage.getItem("loggedInUser");
+  const user = localStorage.getItem("loggedInUserId");
   const cartKey = user ? `cart_${user}` : "guest_cart";
   const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
 
@@ -748,14 +1208,14 @@ function payWithMoMo() {
 
   msg.textContent =
     `📲 Payment request sent! 
-     Dial *182# → Approve payment of RWF ${total.toLocaleString()}`;
+     Dial *182*8*1*1946159# Iradukunda Jacques → Approve payment of RWF ${total.toLocaleString()}`;
   msg.style.color = "green";
 }
 </script>
 <script>
 function confirmPaymentWhatsApp() {
-  const user = localStorage.getItem("loggedInUser") || "Guest";
-  const cartKey = localStorage.getItem("loggedInUser")
+  const user = localStorage.getItem("loggedInUserId") || "Guest";
+  const cartKey = localStorage.getItem("loggedInUserId")
     ? `cart_${user}`
     : "guest_cart";
 
@@ -790,5 +1250,146 @@ function confirmPaymentWhatsApp() {
   );
 }
 </script>
+<script>
+let ordersVisible = false;
+
+function toggleOrders() {
+  const history = document.getElementById("orderHistory");
+  const filter = document.getElementById("orderFilter");
+
+  ordersVisible = !ordersVisible;
+
+  if (ordersVisible) {
+    history.style.display = "block";
+    filter.style.display = "inline-block";
+    loadOrderHistory(); // fetch orders when opening
+  } else {
+    history.style.display = "none";
+    filter.style.display = "none";
+  }
+}
+
+function loadOrderHistory(filter = "all") {
+  const user = localStorage.getItem("loggedInUserId");
+  if (!user) return;
+
+  fetch(`http://localhost:8000/orders?username=${encodeURIComponent(user)}`)
+    .then(res => res.json())
+    .then(orders => {
+      if (filter !== "all") {
+        orders = orders.filter(o => o.status === filter);
+      }
+
+      const container = document.getElementById("orderHistory");
+      if (orders.length === 0) {
+        container.innerHTML = "<p>No orders found.</p>";
+        return;
+      }
+
+      container.innerHTML = "";
+      orders.reverse().forEach(order => {
+        container.innerHTML += `
+          <div class="order-card">
+            <p><strong>Order ID:</strong> ${order.orderId}</p>
+            <p><strong>Date:</strong> ${order.date}</p>
+            <p class="order-status status-${order.status}">
+              Status: ${order.status}
+            </p>
+            <ul>
+              ${order.items.map(item => `<li>${item.name} x ${item.qty}</li>`).join("")}
+            </ul>
+            <p><strong>Total:</strong> ${order.total.toLocaleString()} RWF</p>
+          </div>
+        `;
+      });
+    })
+    .catch(err => {
+      console.error(err);
+      document.getElementById("orderHistory").innerHTML =
+        "<p>Failed to load orders. Please try again later.</p>";
+    });
+}
+
+
+
+function filterOrders() {
+  const value = document.getElementById("orderFilter").value;
+  loadOrderHistory(value);
+}
+</script>
+
+
+<script>
+/* 🔍 AUTOFILL SEARCH ONLY */
+
+const productsData = [
+  {
+    name: "Pixium X5 Smartphone",
+    image: "images/pixiumx5.png",
+    link: "/details/pixium X5.html"
+  },
+  {
+    name: "Earbuds PM9",
+    image: "images/Earbuds PM9.png",
+    link: "/Details/Earbuds PM9.html"
+  },
+  {
+    name: "Apple Airpods pro",
+    image: "images/MyItems/Electronics/airpod pro anc 2.png",
+    link: "/Details/Apple Airpods pro.html"
+  },
+  {
+    name: "Earbuds P61",
+    image: "images/earbuds P61.png",
+    link: "/Details/Product details 4.html"
+  }
+  // 👉 add more products here
+];
+
+const searchInput = document.getElementById("globalSearch");
+const box = document.getElementById("autocompleteBox");
+
+searchInput.addEventListener("input", () => {
+  const value = searchInput.value.toLowerCase().trim();
+  box.innerHTML = "";
+
+  if (value.length < 2) {
+    box.style.display = "none";
+    return;
+  }
+
+  const matches = productsData.filter(p =>
+    p.name.toLowerCase().includes(value)
+  );
+
+  if (matches.length === 0) {
+    box.style.display = "none";
+    return;
+  }
+
+  matches.slice(0, 6).forEach(product => {
+    const div = document.createElement("div");
+    div.className = "autocomplete-item";
+    div.innerHTML = `
+      <img src="${product.image}">
+      <span>${product.name}</span>
+    `;
+    div.onclick = () => {
+      window.location.href = product.link;
+    };
+    box.appendChild(div);
+  });
+
+  box.style.display = "block";
+});
+
+/* Close when clicking outside */
+document.addEventListener("click", e => {
+  if (!e.target.closest(".search-container")) {
+    box.style.display = "none";
+  }
+});
+</script>
+
 </body>
 </html>

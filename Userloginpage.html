@@ -2,16 +2,16 @@
 <html>
 <head>
 <link rel="icon" type="image/png" href="favicon.png">
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Products - Imara | Commerce</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Products - Imara | Commerce</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
+<script type="module" src="firebaseauth.js"></script>
+
 <style>
     body {
         font-family: 'Poppins', sans-serif;
@@ -25,48 +25,128 @@
     form {
         max-width: 400px;
         margin: 0 auto 40px auto;
-        padding: 20px;
+        padding: 25px;
         background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        transition: transform 0.3s ease;
     }
     input {
         width: 100%;
-        padding: 10px;
+        padding: 12px;
         margin: 10px 0;
         border: 1px solid #ccc;
-        border-radius: 4px;
+        border-radius: 6px;
+        transition: border 0.3s;
+    }
+    input:focus {
+        border-color: #28a745;
+        outline: none;
     }
     button {
         width: 100%;
-        padding: 10px;
+        padding: 12px;
         background: #28a745;
         color: #fff;
         border: none;
-        border-radius: 4px;
+        border-radius: 6px;
         cursor: pointer;
+        font-weight: 600;
+        transition: background 0.3s, transform 0.2s;
     }
     button:hover {
         background: #218838;
+        transform: translateY(-2px);
     }
     p {
         text-align: center;
     }
+
+    /* Forgot Password Modal */
+    #forgotPasswordModal {
+        display: none;
+        position: fixed;
+        top:0; left:0;
+        width:100%; height:100%;
+        background: rgba(0,0,0,0.5);
+        z-index:1000;
+        justify-content: center;
+        align-items: center;
+        animation: fadeIn 0.3s ease;
+    }
+    #forgotPasswordModal .modal-content {
+        background:#fff;
+        padding: 30px 25px;
+        border-radius:12px;
+        width:90%;
+        max-width:400px;
+        text-align:center;
+        position: relative;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        transform: scale(0.8);
+        animation: scaleUp 0.3s forwards;
+    }
+    #forgotPasswordModal input {
+        width: 100%;
+        padding: 12px;
+        margin: 15px 0;
+        border:1px solid #ccc;
+        border-radius:6px;
+    }
+    #forgotPasswordModal button {
+        background: #28a745;
+        width: 100%;
+        padding: 12px;
+        border-radius: 6px;
+        border: none;
+        font-weight: 600;
+    }
+    #forgotPasswordModal button:hover {
+        background: #218838;
+    }
+    #forgotPasswordModal span.close {
+        position:absolute;
+        top:12px;
+        right:15px;
+        cursor:pointer;
+        font-weight:bold;
+        font-size:22px;
+        color:#333;
+        transition: color 0.3s;
+    }
+    #forgotPasswordModal span.close:hover {
+        color: #28a745;
+    }
+    #resetMessage {
+        margin-top: 10px;
+        font-size: 14px;
+    }
+
+    @keyframes scaleUp {
+        to { transform: scale(1); }
+    }
+    @keyframes fadeIn {
+        from { background: rgba(0,0,0,0); }
+        to { background: rgba(0,0,0,0.5); }
+    }
 </style>
-    <body>
-    <div class="container">
-        <div class="navbar">
-       <div class="logo">
-      <a href="index.html"><img src="images/ImaraCommerce_logo_transparent.png" width="150px"></a>
-       </div>
-       <nav>
-        <ul id="MenuItems">
-            <b><li><a href="index.html">Home</a></li></b>
-            <b><li><a href="products.html">Products</a></li>
-            <b><li><a href="About.html">About</a></li></b>
-            <b><li><a href="Userloginpage.html">Account</a></li></b>
-        </ul>
-       </nav> 
+</head>
+
+<body>
+<div class="container">
+    <div class="navbar">
+        <div class="logo">
+            <a href="index.html"><img src="images/ImaraCommerce_logo_transparent.png" width="150px"></a>
+        </div>
+        <nav>
+            <ul id="MenuItems">
+                <b><li><a href="index.html">Home</a></li></b>
+                <b><li><a href="products.html">Products</a></li>
+                <b><li><a href="About.html">About</a></li></b>
+                <b><li><a href="Userloginpage.html">Account</a></li></b>
+                <b><li><a href="order-history.html">My Order</a></li></b>
+            </ul>
+        </nav> 
         <div class="nav-actions">
           <a href="Cart33.html" class="cart-icon" aria-label="Cart">
             <img src="images/New cart icon.png" width="30" height="30" alt="Cart">
@@ -74,172 +154,89 @@
           </a>
           <span id="navUser" class="nav-user"></span>
           <img src="images/icons8-menu-50.png" class="menu-icon" onclick="menutoggle()" alt="Menu" />
-    </div>
+        </div>
     </div> 
-    
 
 <h2>Sign Up</h2>
 <form id="signupForm">
+  <div id="signUpMessage" class="messageDiv" style="display:none;"></div>
     <input type="text" id="suUsername" placeholder="Username" required />
     <input type="email" id="suEmail" placeholder="Email" required />
     <input type="password" id="suPassword" placeholder="Password (min 6)" required />
-    <button type="submit">SignUp</button>
-    <p id="signupMsg"></p>
+    <button type="submit" id="submitSignUp">SignUp</button>
 </form>
-<script>
-const signupForm = document.getElementById("signupForm");
-const signupMsg = document.getElementById("signupMsg");
-
-signupForm.addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  const username = suUsername.value.trim();
-  const email = suEmail.value.trim();
-  const password = suPassword.value;
-
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-
-  // Username or email exists
-  const userExists = users.some(
-    u => u.username === username || u.email === email
-  );
-
-  if (userExists) {
-    signupMsg.textContent = "Username or email already exists";
-    signupMsg.style.color = "red";
-    return;
-  }
-
-  if (password.length < 6) {
-    signupMsg.textContent = "Password must be at least 6 characters";
-    signupMsg.style.color = "red";
-    return;
-  }
-
-  users.push({ username, email, password });
-  localStorage.setItem("users", JSON.stringify(users));
-
-  signupMsg.textContent = "Signup successful! You can login now.";
-  signupMsg.style.color = "green";
-
-  signupForm.reset();
-});
-</script>
 
 <h2>Login</h2>
 <form id="loginForm">
-    <input type="text" id="liUsername" placeholder="Username or Email" required />
-    <input type="password" id="liPassword" placeholder="Password" required />
-    <button type="submit">Login</button>
-    <p id="loginMsg"></p>
+  <div id="loginMessage" class="messageDiv" style="display:none;"></div>
+    <input type="text" id="email" placeholder="Username or Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button type="submit" id="submitLogin">Login</button>
+    <p style="margin-top:10px; text-align:center;">
+        <a href="#" id="forgotPassword" style="color:#28a745; cursor:pointer;">Forgot Password?</a>
+    </p>
 </form>
-<script>
-const loginForm = document.getElementById("loginForm");
-const loginMsg = document.getElementById("loginMsg");
 
-loginForm.addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  const identifier = liUsername.value.trim();
-  const password = liPassword.value;
-
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-
-  const user = users.find(
-    u =>
-      (u.username === identifier || u.email === identifier) &&
-      u.password === password
-  );
-
-  if (!user) {
-    loginMsg.textContent = "Invalid login credentials";
-    loginMsg.style.color = "red";
-    return;
-  }
-
-  localStorage.setItem("loggedInUser", user.username);
-  loginMsg.textContent = "Login successful!";
-  loginMsg.style.color = "green";
-
-  // Redirect or show cart
-  setTimeout(() => {
-    window.location.href = "Cart33.html";
-  }, 1000);
-});
-</script>
-<script>
-    function addToCart(name, price) {
-  const cartKey = getCartKey();
-  let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
-
-  const item = cart.find(i => i.name === name);
-
-  if (item) {
-    item.qty += 1;
-  } else {
-    cart.push({ name, price, qty: 1 });
-  }
-
-  localStorage.setItem(cartKey, JSON.stringify(cart));
-  alert("Item added to cart");
-}
-</script>
-<!------------ footer ---------->
-
-    <div class="footer">
-        <div class="container">
-            <div class="row">
-              <div class="footer-col-1">
-                <h3>Download Our App</h3>
-                <p>Download App For Android And Ios Mobile Phone</p>
-                <div class="app-logo">
-                    <img src="images/app;esotre.png">
-                    <img src="images/Google_Play_Store_.png">
-                </div>
-              </div>
-              <div class="footer-col-2">
-               <img src="images/ImaraCommerce_logo_transparent.png" width="100%">
-                <p>Our purpose is to sustainably make the pleasure and benefits of electronics and agriculture tools to be accessible to all</p>
-              </div>
-              <div class="footer-col-3">
-                <h3>Follow Us</h3>
-                <ul>
-                    <li>Facebook</li>
-                    <li>Instagram</li>
-                    <li>Youtube</li>
-                    <li>TikTok</li>
-                </ul>
-              </div>
-              <div class="footer-col-4">
-                <h3>Useful Link</h3>
-                <ul>
-                    <li>Coupons</li>
-                    <li>Blog Post</li>
-                    <li>Return Policy</li>
-                    <li>Join Affliate</li>
-                </ul>
-              </div>            
-            </div>
-            <hr>
-            <p class="Copyright">Copyright 2025</p>
-        </div>
+<!-- Forgot Password Modal -->
+<div id="forgotPasswordModal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">×</span>
+        <h3>Reset Your Password</h3>
+        <input type="email" id="resetEmail" placeholder="Enter your email" required>
+        <button id="resetBtn">Send Reset Link</button>
+        <p id="resetMessage"></p>
     </div>
-<!-------------js for toggle menu----------->
+</div>
+
+<script type="module">
+    import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+
+    const auth = getAuth();
+
+    // Show modal
+    document.getElementById("forgotPassword").addEventListener("click", () => {
+        document.getElementById("forgotPasswordModal").style.display = "flex";
+    });
+
+    // Close modal
+    function closeModal() {
+        document.getElementById("forgotPasswordModal").style.display = "none";
+        document.getElementById("resetMessage").textContent = "";
+        document.getElementById("resetEmail").value = "";
+    }
+
+    // Handle reset email
+    document.getElementById("resetBtn").addEventListener("click", async () => {
+        const email = document.getElementById("resetEmail").value;
+        const msg = document.getElementById("resetMessage");
+
+        if (!email) {
+            msg.textContent = "Please enter your email.";
+            msg.style.color = "red";
+            return;
+        }
+
+        try {
+            await sendPasswordResetEmail(auth, email);
+            msg.textContent = "Password reset email sent! Check your inbox.";
+            msg.style.color = "green";
+        } catch (error) {
+            console.error(error);
+            msg.textContent = error.message;
+            msg.style.color = "red";
+        }
+    });
+</script>
 
 <script>
     var MenuItems = document.getElementById("MenuItems");
-
     MenuItems.style.maxHeight = "0px";
-
     function menutoggle(){
-        if(MenuItems.style.maxHeight == "0px")
-            {
-                MenuItems.style.maxHeight = "200px";
-            }
-        else
-            {
-                MenuItems.style.maxHeight = "0px"; 
-            }   
+        if(MenuItems.style.maxHeight == "0px") {
+            MenuItems.style.maxHeight = "200px";
+        } else {
+            MenuItems.style.maxHeight = "0px"; 
+        }   
     }
 </script>
 
