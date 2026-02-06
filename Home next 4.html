@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="favicon.png">
+  <meta name="google-site-verification" content="abc123xyz" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imara | Commerce-Powering Digital Trade</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.product {
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 12px;
+  margin: 0;
+  text-align: center;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 260px;
+}
+.product img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.product h4 {
+  margin: 6px 0 2px;
+  font-size: 16px;
+  color: #333;
+}
+.product p {
+  color: #666;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.product button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 20px;
+  font-size: 14px;
+}
+.product button:hover {
+  background-color: #218838;
+}
+.products-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 18px;
+  justify-items: center;
+  padding: 8px 12px;
+}
+
+@media (max-width: 600px) {
+  .products-container { grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 8px; }
+  .product { max-width: 100%; }
+  .product img { height: 180px; }
+}
+
+/* Medium and large screens for index product grid */
+@media (min-width: 601px) and (max-width: 900px) {
+  .products-container { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 901px) and (max-width: 1199px) {
+  .products-container { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1200px) {
+  .products-container { grid-template-columns: repeat(4, 1fr); }
+}
+.remove-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 12px;
+  margin-left: 10px;
+}
+.remove-btn:hover {
+  background-color: #c82333;
+}
+.place-order-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+.place-order-btn:hover {
+  background-color: #218838;
+}
+.whatsapp-order-btn {
+  background: linear-gradient(45deg, #25D366, #128C7E);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 25px;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+  transition: all 0.3s ease;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+.whatsapp-order-btn:hover {
+  background: linear-gradient(45deg, #128C7E, #075E54);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+  transform: translateY(-2px);
+}
+.whatsapp-order-btn:before {
+  content: "📱";
+  font-size: 18px;
+}
+.whatsapp-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #25D366;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.whatsapp-btn:hover {
+  background: #1ebe5d;
+}
+/* Cart List Styling */
+#cartItems {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0;
+}
+#cartItems li {
+  background: #f8f9fa;
+  border-left: 4px solid #28a745;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: all 0.2s ease;
+}
+#cartItems li:hover {
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+#cartItems li .item-name {
+  font-weight: 600;
+  color: #333;
+  flex: 1;
+  min-width: 0;
+}
+#cartItems li .item-price {
+  color: #666;
+  font-size: 13px;
+  white-space: nowrap;
+}
+#cartItems button {
+  padding: 6px 10px;
+  font-size: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 32px;
+}
+#cartItems .qty-btn {
+  background: #e8f5e9;
+  color: #28a745;
+  font-weight: bold;
+}
+#cartItems .qty-btn:hover {
+  background: #28a745;
+  color: white;
+}
+#cartItems .remove-btn {
+  background: #ffebee;
+  color: #dc3545;
+  font-weight: bold;
+}
+#cartItems .remove-btn:hover {
+  background: #dc3545;
+  color: white;
+}
+/* Nav actions: cart, user label and menu (aligned, compact badge) */
+.nav-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.cart-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+}
+.cart-badge {
+  background: #ff4d4d;
+  color: #fff;
+  border-radius: 50%;
+  min-width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  padding: 0 6px;
+}
+.nav-user {
+  font-weight: 600;
+  font-size: 0;
+  color: #333;
+}
+.menu-icon {
+  cursor: pointer;
+  width: 34px;
+  height: 34px;
+}
+.hero-video-container {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  overflow: hidden;
+  background: black;
+}
+
+.hero-video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background: rgba(0,0,0,0.4);
+  text-align: center;
+}
+
+.hero-overlay h1 {
+  font-size: 40px;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 32px;
+  }
+  .hero-video-container {
+    height: 50;
+    margin-top: 130px;
+  }
+}
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 450px;
+  margin: 20px auto;
+}
+
+.search-container input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+.search-container button {
+  padding: 10px 18px;
+  border-radius: 25px;
+  border: none;
+  background: #28a745;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.search-container button:hover {
+  background: #218838;
+}
+
+#toggleBtn {
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 10px;
+  border: none;
+  margin-bottom: 5px;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 260px;
+  height: 100%;
+  background: #111;
+  color: white;
+  padding: 20px;
+  transition: 0.3s ease;
+  z-index: 1000;
+}
+
+.sidebar.active {
+  left: 0;
+}
+
+.sidebar a {
+  display: block;
+  padding: 10px 0;
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  color: #00ffcc;
+}
+
+/* Products */
+.products {
+  padding: 20px;
+}
+
+.product {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+/* Overlay */
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s ease;
+  z-index: 900;
+}
+
+/* Show overlay */
+#overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+#overlay {
+  backdrop-filter: blur(3px);
+}
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100vh;            /* full screen height */
+  background: #161313;
+  overflow-y: auto;         /* 👈 enable vertical scroll */
+  overflow-x: hidden;       /* prevent horizontal scroll */
+  transition: transform 0.3s ease;
+  transform: translateX(-100%);
+  z-index: 1000;
+}
+
+.sidebar.active {
+  transform: translateX(0);
+}
+
+.products .product {
+  display: none;
+}
+
+.autocomplete-box {
+  position: absolute;
+  background: #fff;
+  width: 100%;
+  max-width: 320px;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  margin-top: 5px;
+  z-index: 1000;
+  overflow: hidden;
+  display: none;
+}
+
+.autocomplete-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.2s;
+}
+
+.autocomplete-item:hover {
+  background: #f5f5f5;
+}
+
+.autocomplete-item img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.autocomplete-item span {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+</style>
+</head>
+<body> 
+  <div id="overlay"></div>
+
+     <div class="header">
+    <div class="container">
+        <div class="navbar">
+       <div class="logo">
+      <a href="index.html"><img src="images/ImaraCommerce_logo_transparent.png" width="150px"></a>
+       </div>
+       <nav>
+        <ul id="MenuItems">
+            <b><li><a href="index.html">Home</a></li></b>
+            <b><li><a href="products.html">Products</a></li>
+            <b><li><a href="About.html">About</a></li></b>
+            <b><li><a href="Userloginpage.html">Account</a></li></b>
+            <b><li><a href="order-history.html">My Order</a></li></b>
+        </ul>
+       </nav> 
+        <div class="nav-actions">
+          <a href="Cart33.html" class="cart-icon" aria-label="Cart">
+            <img src="images/New cart icon.png" width="30" height="30" alt="Cart">
+            <span id="cartCount" class="cart-badge" aria-live="polite">0</span>
+          </a>
+<span id="navUser" class="nav-user">Guest</span>
+<span id="loginStatus" class="login-status"></span>
+          <img src="images/icons8-menu-50.png" class="menu-icon" onclick="menutoggle()" alt="Menu" />
+        </div>
+    </div>
+
+<!-- Toggle Button -->
+<button id="toggleBtn">☰ Categories</button>
+
+<!-- Sidebar -->
+<div id="sidebar" class="sidebar">
+  <h3>Categories</h3>
+   <a onclick="filterCategory('all')"><a href="/Categories/all.html">All</a>
+  <a onclick="filterCategory('Electronics')"><a href="/Categories/electronics.html">Electronics</a>
+  <a onclick="filterCategory('Shoes')"><a href="/Categories/shoes.html">Shoes</a>
+  <a onclick="filterCategory('Clothes')"><a href="/Categories/clothes.html">Clothes</a>
+  <a onclick="filterCategory('Households')"><a href="/Categories/households.html">Households</a>
+  <a onclick="filterCategory('Furnitures')"><a href="/Categories/furnitures.html">Furnitures</a>
+  <a onclick="filterCategory('Drinks')"><a href="/Categories/drinks.html">Drinks</a>
+  <a onclick="filterCategory('Food')"><a href="/Categories/food.html">Food</a>
+  <a onclick="filterCategory('Beauty')"><a href="/Categories/beauty.html">Cosmetics</a>
+    <a onclick="filterCategory('Wholesale')"><a href="/Categories/wholesale.html">Wholesale</a>
+  <a onclick="filterCategory('IWAWE')"><a href="/Categories/iwawe.html">IWAWE</a>
+</div>
+
+<div class="search-container">
+  <input
+    type="text"
+    id="globalSearch"
+    placeholder="Search products..."
+    autocomplete="off"
+/>
+</div>
+
+<div id="autocompleteBox" class="autocomplete-box"></div> 
+
+<a href="https://wa.me/250781106751?text=Hello%20I%20want%20to%20ask%20about%20my%20order"
+   target="_blank"
+   class="whatsapp-btn">
+   💬 Chat on WhatsApp
+</a>
+<div class="hero-video-container">
+  <video id="heroVideo" muted loop autoplay playsinline>
+    <source src="./hero.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="hero-overlay">
+    <h1 id="slidingText">Powering Digital Trade 🚀</h1>
+    <p>Smart • Fast • Secure Commerce</p>
+  </div>
+</div>
+    <div class="row">
+        <div class="col-2">
+<h1 class="hero-title">
+  <span id="slidingText"></span>
+</h1>
+            <a href="products.html" class="btn">Explore Now &#8594;</a>
+
+        </div>
+    </div>
+    </div>
+ </div> 
+ 
+  <!------ featured categories ------>
+
+ <div class="categories">
+    <div class="small-container">
+<div class="row">
+        <div class="col-3">
+            <img src="images/Rwanda ziza 1.jpeg">
+        </div>
+        <div class="col-3">
+            <img src="images/Rwanda ziza 2.jpg">
+        </div>
+        <div class="col-3">
+            <img src="images/Rwanda ziza 3.jpeg">
+        </div>
+    </div>
+    </div>
+    
+ </div>
+
+    <!-------- featured Products -------->
+<div class="account-page">
+<div class="container">
+  <div class="col-1">
+<h2>Welcome, <span id="user"></span><br>
+
+<h2>Your Cart</h2>
+<ul id="cartList"></ul>
+<p><strong>Total:</strong> <span id="total">0</span> RWF </p>
+<ul id="cartItems"></ul>
+<p id="orderMsg"></p>
+
+
+<table>
+<div class="hero-video-container">
+  <video id="heroVideo" muted loop autoplay playsinline>
+    <source src="./tranding ads.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="hero-overlay">
+    <h1 id="slidingText">Powering Digital Trade 🚀</h1>
+    <p>Smart • Fast • Secure Commerce</p>
+  </div>
+</div>
+
+
+<hr>
+<h3>Products</h3>
+<!------------ Put product here -------->
+
+
+ <div class="page-btn">
+        <span><a href="index.html">1</a></span>
+        <span><a href="Home next 1.html">2</a></span>
+        <span><a href="Home next 2.html">3</a></span>
+        <span><a href="Home next 3.html">4</a></span>
+        <span><a href="Home next 4.html">&#8594;</a></span>
+    </div>
+
+
+<h3>Latest Products</h3>
+<div class="hero-video-container">
+  <video id="heroVideo" muted loop autoplay playsinline>
+    <source src="./hero.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="hero-overlay">
+    <h1 id="slidingText">Powering Digital Trade 🚀</h1>
+    <p>Smart • Fast • Secure Commerce</p>
+  </div>
+</div>
+<hr>
+</h2>
+</div>
+</div>
+</div>
+</table>
+<!------------ brands -------->
+    <div class="brands">
+        <div class="small-container">
+            <div class="row">
+                <div class="col-5">
+                    <img src="images/credit-card-icons-logo.png">
+                </div>  
+                 <div class="col-5">
+                    <img src="images/mtn-momo-mobile-money.png">
+                </div>        
+                 <div class="col-5">
+                    <img src="images/ImaraCommAds.png">
+                </div>        
+                 <div class="col-5">
+                    <img src="images/equity-bank-logo-.png">
+                </div>                      
+            </div>
+        </div>
+    </div>
+
+<!------------ footer ---------->
+<h3>Contact Us</h3>
+
+<p>📞 Phone: <a href="tel:+250781106751">+250 781 106 751</a></p>
+
+<p>💬 WhatsApp:
+  <a href="https://wa.me/250781106751" target="_blank">
+    Chat on WhatsApp
+  </a>
+</p>
+
+<p>📧 Email:
+  <a href="mailto:imaracommerce.com">imaracommerce.com</a>
+</p>
+
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+              <div class="footer-col-1">
+                <h3>Download Our App</h3>
+                <p>Download App For Android And Ios Mobile Phone</p>
+                <div class="app-logo">
+                    <img src="images/app;esotre.png">
+                    <img src="images/Google_Play_Store_.png">
+                </div>
+              </div>
+              <div class="footer-col-2">
+                <img src="images/ImaraCommerce_logo_transparent.png" width="100px">
+                <p>Our purpose is to sustainably make the pleasure and powering online businesses with fast and reliable commerce tools.</p>
+              </div>
+              <div class="footer-col-3">
+                <h3>Follow Us</h3>
+                <ul>
+                    <li>Facebook</li>
+                    <li>Instagram</li>
+                    <li>Youtube</li>
+                    <li>TikTok</li>
+                </ul>
+              </div>
+              <div class="footer-col-4">
+                <h3>Useful Link</h3>
+                <ul>
+                    <li>Coupons</li>
+                    <li>Blog Post</li>
+                    <li>Return Policy</li>
+                    <li>Join Affliate</li>
+                </ul>
+              </div>            
+            </div>
+            <hr>
+            <p class="Copyright">Copyright 2025</p>
+        </div>
+    </div>
+<!-------------js for toggle menu----------->
+
+<script>
+    var MenuItems = document.getElementById("MenuItems");
+
+    MenuItems.style.maxHeight = "0px";
+
+    function menutoggle(){
+        if(MenuItems.style.maxHeight == "0px")
+            {
+                MenuItems.style.maxHeight = "200px";
+            }
+        else
+            {
+                MenuItems.style.maxHeight = "0px"; 
+            }   
+    }
+
+</script>
+<script>
+const sidebar = document.getElementById("sidebar");
+const toggleBtn = document.getElementById("toggleBtn");
+const overlay = document.getElementById("overlay");
+
+toggleBtn.addEventListener("click", () => {
+  sidebar.classList.add("active");
+  overlay.classList.add("active");
+});
+
+// Close when clicking overlay
+overlay.addEventListener("click", closeSidebar);
+
+function closeSidebar() {
+  sidebar.classList.remove("active");
+  overlay.classList.remove("active");
+}
+
+function filterCategory(category) {
+  const products = document.querySelectorAll(".product");
+
+  products.forEach(product => {
+    const productCategory = product.dataset.category;
+
+    if (category === "all" || productCategory === category) {
+      product.style.display = "block";
+    } else {
+      product.style.display = "none";
+    }
+  });
+
+  closeSidebar();
+}
+</script>
+
+
+<script>
+  function getCartKey() {
+    const user = localStorage.getItem("loggedInUserId");
+    return user ? `cart_${user}` : null;
+  }
+</script>
+<script>
+  function loadCart() {
+    const cartKey = getCartKey();
+    return JSON.parse(localStorage.getItem(cartKey)) || [];
+  }
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const loggedInUser = localStorage.getItem("loggedInUserId");
+  const navUser = document.getElementById("navUser");
+  const status = document.getElementById("loginStatus");
+
+  if (loggedInUser) {
+    navUser.textContent = `Hello, ${loggedInUser}`;
+    status.textContent = "🟢 Logged in";
+    status.className = "login-status logged-in";
+  } else {
+    navUser.textContent = "Guest";
+    status.textContent = "🔴 Guest";
+    status.className = "login-status guest";
+  }
+
+  renderCart();
+  updateCartCount();
+});
+</script>
+<script>
+  function addToCart(name, price) {
+    const cartKey = getCartKey() || "guest_cart";
+    let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+    const existingItem = cart.find(item => item.name === name);
+    if (existingItem) {
+      existingItem.qty += 1;
+    } else {
+      cart.push({ name, price, qty: 1 });
+    }
+
+    localStorage.setItem(cartKey, JSON.stringify(cart));
+    renderCart();
+    updateCartCount();
+  }
+</script>
+<script>
+  function updateCartCount() {
+    const cartKey = getCartKey();
+    const cartCountEl = document.getElementById("cartCount");
+
+    if (!cartCountEl) return;
+
+    if (!cartKey) {
+      cartCountEl.textContent = 0;
+      return;
+    }
+
+    const cart = loadCart();
+    const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+    cartCountEl.textContent = totalQty;
+  }
+</script>
+<script>
+  function renderCart() {
+  const cartKey = getCartKey() || "guest_cart";
+
+  const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+  const cartList = document.getElementById("cartItems");
+  const totalEl = document.getElementById("total");
+
+  cartList.innerHTML = "";
+  let total = 0;
+
+  cart.forEach((item, index) => {
+    total += item.price * item.qty;
+
+    cartList.innerHTML += `
+      <li>
+        <span class="item-name">${item.name}</span>
+        <span class="item-price">${item.qty}x ${item.price.toLocaleString()} RWF</span>
+        <button class="qty-btn" onclick="changeQty(${index}, -1)" title="Decrease">−</button>
+        <button class="qty-btn" onclick="changeQty(${index}, 1)" title="Increase">+</button>
+        <button class="remove-btn" onclick="removeItem(${index})" title="Remove">✕</button>
+      </li>
+    `;
+  });
+
+  totalEl.textContent = total.toLocaleString();
+}
+</script>
+<script>
+  function changeQty(index, delta) {
+  const cartKey = getCartKey() || "guest_cart";
+  let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+
+  cart[index].qty += delta;
+  if (cart[index].qty < 1) cart[index].qty = 1;
+
+  localStorage.setItem(cartKey, JSON.stringify(cart));
+  renderCart();
+  updateCartCount();
+}
+</script>
+<script>
+  function removeItem(index) {
+  const cartKey = getCartKey() || "guest_cart";
+  let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+
+  cart.splice(index, 1);
+  localStorage.setItem(cartKey, JSON.stringify(cart));
+
+  renderCart();
+  updateCartCount();
+}
+</script>
+<script>
+  function placeOrder() {
+  const user = localStorage.getItem("loggedInUser");
+  if (!user) {
+    alert("Please login to place an order");
+    window.location.href = "Userloginpage.html";
+    return;
+  }
+
+  const cartKey = `cart_${user}`;
+  let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+
+  // Merge guest cart if exists
+  const guestCart = JSON.parse(localStorage.getItem("guest_cart")) || [];
+  if (guestCart.length > 0) {
+    guestCart.forEach(guestItem => {
+      const existing = cart.find(item => item.name === guestItem.name);
+      if (existing) {
+        existing.qty += guestItem.qty;
+      } else {
+        cart.push(guestItem);
+      }
+    });
+    localStorage.removeItem("guest_cart");
+    localStorage.setItem(cartKey, JSON.stringify(cart));
+  }
+
+  if (cart.length === 0) {
+    alert("Your cart is empty");
+    return;
+  }
+
+  const total = cart.reduce(
+    (sum, item) => sum + item.price * item.qty,
+    0
+  );
+
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+  orders.push({
+    orderId: "ORD-" + Date.now(),
+    username: user,
+    items: cart,
+    total: total,
+    date: new Date().toLocaleString(),
+    status: "Pending"
+  });
+
+  localStorage.setItem("orders", JSON.stringify(orders));
+  localStorage.removeItem(cartKey);
+
+  updateCartCount();
+  renderCart();
+
+  document.getElementById("orderMsg").textContent = "✅ Order placed successfully! Redirecting...";
+  setTimeout(() => {
+    window.location.href = "popup.html";
+  }, 2000);
+}
+</script>
+<script>
+function logout() {
+  localStorage.removeItem("loggedInUser");
+  alert("You have been logged out.");
+  window.location.href = "index.html";
+}
+</script>
+<script>
+function sendOrderToWhatsApp() {
+  const currentUser = localStorage.getItem("loggedInUser");
+  if (!currentUser) {
+    alert("Please login to send order via WhatsApp");
+    window.location.href = "Userloginpage.html";
+    return;
+  }
+
+  const cartKey = `cart_${currentUser}`;
+  let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+
+  // Merge guest cart if exists
+  const guestCart = JSON.parse(localStorage.getItem("guest_cart")) || [];
+  if (guestCart.length > 0) {
+    guestCart.forEach(guestItem => {
+      const existing = cart.find(item => item.name === guestItem.name);
+      if (existing) {
+        existing.qty += guestItem.qty;
+      } else {
+        cart.push(guestItem);
+      }
+    });
+  }
+
+  if (cart.length === 0) {
+    alert("Cart is empty");
+    return;
+  }
+
+  let message = "Hello, I want to order:%0A";
+  let total = 0;
+
+  cart.forEach(item => {
+    message += `${item.name} x ${item.qty} = RWF ${item.price * item.qty}%0A`;
+    total += item.price * item.qty;
+  });
+
+  message += `%0ATotal: RWF ${total}`;
+
+  window.open(
+    `https://wa.me/250781106751?text=${message}`,
+    "_blank"
+  );
+}
+</script>
+<script>
+const texts = [
+  "Powering Digital Trade 🚀",
+  "Smart Electronics 🧠",
+  "Fast & Secure Shopping 🛒",
+  "Imara Commerce 🇷🇼"
+];
+
+let index = 0;
+const slidingText = document.getElementById("slidingText");
+
+function changeText() {
+  slidingText.style.opacity = 0;
+
+  setTimeout(() => {
+    slidingText.textContent = texts[index];
+    slidingText.style.opacity = 1;
+    index = (index + 1) % texts.length;
+  }, 500);
+}
+
+slidingText.style.transition = "opacity 0.5s ease";
+changeText();
+setInterval(changeText, 3000);
+</script>
+<script>
+const video = document.getElementById("heroVideo");
+
+video.muted = true;
+video.play().catch(() => {
+  console.log("Autoplay blocked, user interaction required");
+});
+</script>
+<script>
+/* 🔍 AUTOFILL SEARCH ONLY */
+
+const productsData = [
+  {
+    name: "Pixium X5 Smartphone",
+    image: "images/pixiumx5.png",
+    link: "/details/pixium X5.html"
+  },
+  {
+    name: "Earbuds PM9",
+    image: "images/Earbuds PM9.png",
+    link: "/Details/Earbuds PM9.html"
+  },
+  {
+    name: "Apple Airpods pro",
+    image: "images/MyItems/Electronics/airpod pro anc 2.png",
+    link: "/Details/Apple Airpods pro.html"
+  },
+  {
+    name: "Earbuds P61",
+    image: "images/earbuds P61.png",
+    link: "/Details/Product details 4.html"
+  }
+  // 👉 add more products here
+];
+
+const searchInput = document.getElementById("globalSearch");
+const box = document.getElementById("autocompleteBox");
+
+searchInput.addEventListener("input", () => {
+  const value = searchInput.value.toLowerCase().trim();
+  box.innerHTML = "";
+
+  if (value.length < 2) {
+    box.style.display = "none";
+    return;
+  }
+
+  const matches = productsData.filter(p =>
+    p.name.toLowerCase().includes(value)
+  );
+
+  if (matches.length === 0) {
+    box.style.display = "none";
+    return;
+  }
+
+  matches.slice(0, 6).forEach(product => {
+    const div = document.createElement("div");
+    div.className = "autocomplete-item";
+    div.innerHTML = `
+      <img src="${product.image}">
+      <span>${product.name}</span>
+    `;
+    div.onclick = () => {
+      window.location.href = product.link;
+    };
+    box.appendChild(div);
+  });
+
+  box.style.display = "block";
+});
+
+/* Close when clicking outside */
+document.addEventListener("click", e => {
+  if (!e.target.closest(".search-container")) {
+    box.style.display = "none";
+  }
+});
+</script>
+
+</body>
+</html>
