@@ -220,6 +220,10 @@ app.get('/events', (req, res) => {
   });
 });
 
+app.get("/", (req, res) => {
+  res.send("✅ ImaraCommerce API is running successfully!");
+});
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`✅ Server running on port ${PORT}`);
 });
