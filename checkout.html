@@ -443,7 +443,7 @@
       <div style="padding: 15px; background: #e8f5e9; border-radius: 10px; margin: 20px 0; border-left: 4px solid #4caf50;">
         <h4 style="color: #2e7d32; margin-top: 0;">⭐ Loyalty Discount Applied</h4>
         <p style="color: #558b2f; margin-bottom: 10px;">
-          5% of your order total will be automatically paid using your loyalty points!
+          3% of your order total will be automatically paid using your loyalty points!
         </p>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px;">
           <div style="background: white; padding: 10px; border-radius: 5px;">
@@ -451,7 +451,7 @@
             <p id="loyaltyPointsBalanceDisplay" style="margin: 5px 0; font-size: 1.2em; color: #2e7d32; font-weight: 600;">0 RWF</p>
           </div>
           <div style="background: white; padding: 10px; border-radius: 5px;">
-            <small style="color: #999;">5% Discount Applied</small>
+            <small style="color: #999;">3% Discount Applied</small>
             <p id="loyaltyDiscountDisplay" style="margin: 5px 0; font-size: 1.2em; color: #4caf50; font-weight: 600;">0 RWF</p>
           </div>
         </div>
@@ -663,7 +663,7 @@ window.addEventListener("load", () => {
         .then(res => res.json())
         .then(data => {
           const userPoints = data.points || 0;
-          const discountNeeded = Math.floor(total * 0.05);
+          const discountNeeded = Math.floor(total * 0.03); // 3% of total
           const hasEnoughPoints = userPoints >= discountNeeded;
           
           let finalDetails = details;
@@ -671,7 +671,7 @@ window.addEventListener("load", () => {
           if (hasEnoughPoints && discountNeeded > 0) {
             // User has enough points - show and apply discount
             const finalTotal = total - discountNeeded;
-            finalDetails += `<div style="padding: 10px 0; border-bottom: 1px solid #667eea; display: flex; justify-content: space-between;"><span style="color: #4caf50;">⭐ 5% Loyalty Discount:</span><span style="color: #4caf50;">-${discountNeeded.toLocaleString()} RWF</span></div>`;
+            finalDetails += `<div style="padding: 10px 0; border-bottom: 1px solid #667eea; display: flex; justify-content: space-between;"><span style="color: #4caf50;">⭐ 3% Loyalty Discount:</span><span style="color: #4caf50;">-${discountNeeded.toLocaleString()} RWF</span></div>`;
             finalDetails += `<div class="order-total" style="border-top: 2px solid #4caf50; color: #4caf50;"><span>Total to Pay:</span><span>${finalTotal.toLocaleString()} RWF</span></div>`;
             window.loyaltyDiscountApplied = true;
             window.loyaltyDiscountAmount = discountNeeded;
@@ -770,7 +770,7 @@ form.addEventListener("submit", (e) => {
   details += `<p style="margin-top: 15px; font-size: 1em;"><strong>Subtotal: ${total.toLocaleString()} RWF</strong></p>`;
   
   if (loyaltyDiscountApplied && loyaltyDiscount > 0) {
-    details += `<p style="color: #4caf50; font-weight: 600; margin: 10px 0;">⭐ 5% Loyalty Discount: -${loyaltyDiscount.toLocaleString()} RWF</p>`;
+    details += `<p style="color: #4caf50; font-weight: 600; margin: 10px 0;">⭐ 3% Loyalty Discount: -${loyaltyDiscount.toLocaleString()} RWF</p>`;
     details += `<p style="margin-top: 15px; font-size: 1.2em; color: #4caf50;"><strong>Amount to Pay: ${finalTotal.toLocaleString()} RWF</strong></p>`;
   } else {
     details += `<p style="color: #ff9800; font-weight: 600; margin: 10px 0;">ℹ️ No loyalty discount applied (insufficient points)</p>`;

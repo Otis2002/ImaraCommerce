@@ -4,7 +4,7 @@ const cors = require("cors");
 const fs = require("fs");
 
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -103,12 +103,12 @@ app.post("/orders", (req, res) => {
   let loyaltyPoints = 0;
   let loyaltyPointsAwarded = 0;
 
-  // Calculate 2.46% of total amount as loyalty points
-  const pointsToAward = Math.floor(order.total * 0.0246);
+  // Calculate 1.30% of total amount as loyalty points
+  const pointsToAward = Math.floor(order.total * 0.013);
 
-  // Handle loyalty points deduction (5% automatic)
+  // Handle loyalty points deduction (3% automatic)
   if (order.payment && order.payment.method !== "loyalty") {
-    const pointsToUse = Math.floor(order.total * 0.05);
+    const pointsToUse = Math.floor(order.total * 0.03);
     const result = deductLoyaltyPoints(order.username, pointsToUse);
     
     if (!result.success) {
@@ -123,7 +123,7 @@ app.post("/orders", (req, res) => {
     }
   }
 
-  // Award points for this purchase (2.46% of original total)
+  // Award points for this purchase (1.30% of original total)
   loyaltyPoints = awardLoyaltyPoints(order.username, pointsToAward);
   loyaltyPointsAwarded = pointsToAward;
 
@@ -220,8 +220,8 @@ app.get('/events', (req, res) => {
   });
 });
 
-app.listen(PORT, () =>
-  console.log(`✅ Server running on http://localhost:${PORT}`)
-);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`✅ Server running on port ${PORT}`);
+});
 
 
