@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const fs = require("fs");
+const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -18,8 +19,8 @@ function sendSSE(event, data) {
 }
 
 // File to store orders
-const ORDERS_FILE = "orders.json";
-const LOYALTY_POINTS_FILE = "loyaltyPoints.json";
+const ORDER_FILE = path.joint("/tmp", "orders.json");
+const LOYALTY_POINTS_FILE = path.join("/tmp", "loyaltyPoints.json");
 
 // Simple admin login credentials (in production, hash the password)
 const ADMIN_USER = "admin";
