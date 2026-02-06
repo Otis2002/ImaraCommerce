@@ -1,2 +1,0 @@
-# ImaraCommerce
-Online Shopping Platform
