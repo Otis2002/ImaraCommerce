@@ -7,9 +7,16 @@ const cors = require("cors");
 const fs = require("fs");
 
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "https://imaracommerce.netlify.app"
+  ],
+  methods: ["GET", "POST", "PUT"],
+  allowedHeaders: ["Content-Type"],
+}));
+
 app.use(bodyParser.json());
 
 // SSE clients
@@ -224,8 +231,7 @@ app.get('/events', (req, res) => {
   });
 });
 
-app.listen(PORT, () =>
-  console.log(`✅ Server running on http://localhost:${PORT}`)
-);
-
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
