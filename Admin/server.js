@@ -9,14 +9,7 @@ const fs = require("fs");
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-app.use(cors({
-  origin: [
-    "https://imaracommerce.netlify.app"
-  ],
-  methods: ["GET", "POST", "PUT"],
-  allowedHeaders: ["Content-Type"],
-}));
-
+app.use(cors());
 app.use(bodyParser.json());
 
 // SSE clients
