@@ -938,7 +938,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 async function loadLoyaltyPoints(username) {
   try {
-    const res = await fetch(`http://localhost:8000/loyalty-points/${encodeURIComponent(username)}`);
+    const res = await fetch(`https://imaracommerce.onrender.com/loyalty-points/${encodeURIComponent(username)}`);
     const data = await res.json();
     const badge = document.getElementById("loyaltyPointsBadge");
     badge.textContent = `${data.points} Points`;
@@ -1273,7 +1273,7 @@ function loadOrderHistory(filter = "all") {
   const user = localStorage.getItem("loggedInUserId");
   if (!user) return;
 
-  fetch(`http://localhost:8000/orders?username=${encodeURIComponent(user)}`)
+  fetch(`https://imaracommerce.onrender.com/orders?username=${encodeURIComponent(user)}`)
     .then(res => res.json())
     .then(orders => {
       if (filter !== "all") {

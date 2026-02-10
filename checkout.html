@@ -659,7 +659,7 @@ window.addEventListener("load", () => {
     // Will add discount only if user has enough points
     if (user) {
       // Fetch loyalty balance and check if sufficient
-      fetch(`http://localhost:8000/loyalty-points/${user}`)
+      fetch(`https://imaracommerce.onrender.com/loyalty-points/${user}`)
         .then(res => res.json())
         .then(data => {
           const userPoints = data.points || 0;
@@ -822,7 +822,7 @@ form.addEventListener("submit", (e) => {
       payment: paymentData
     };
 
-    fetch("http://localhost:8000/orders", {
+    fetch("https://imaracommerce.onrender.com/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(orderData)

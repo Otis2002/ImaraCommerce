@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8000/orders";
+const API_URL = "https://imaracommerce.onrender.com/orders";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const user = localStorage.getItem("loggedInUserId");
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Fetch and display loyalty points
   try {
-    const loyaltyRes = await fetch(`http://localhost:8000/loyalty-points/${encodeURIComponent(user)}`);
+    const loyaltyRes = await fetch(`https://imaracommerce.onrender.com/loyalty-points/${encodeURIComponent(user)}`);
     const loyaltyData = await loyaltyRes.json();
     userInfo.innerHTML = `<div>Hello, <strong>${user}</strong></div><div class="loyalty-points-display">⭐ ${loyaltyData.points} Loyalty Points</div>`;
   } catch (err) {
