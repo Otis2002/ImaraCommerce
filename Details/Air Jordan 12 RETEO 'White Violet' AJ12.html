@@ -1087,7 +1087,7 @@ function buyNow(name, price) {
   };
 
   // Send order to server
-  fetch("http://localhost:8000/orders", {
+  fetch("https://imaracommerce.onrender.com/orders", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(order)
