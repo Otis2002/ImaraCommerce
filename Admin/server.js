@@ -4,7 +4,7 @@ const cors = require("cors");
 const fs = require("fs");
 
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -220,8 +220,12 @@ app.get('/events', (req, res) => {
   });
 });
 
+app.get('/', (req, res) => {
+  res.send('Admin backend is running');
+});
+
 app.listen(PORT, () =>
-  console.log(`✅ Server running on http://localhost:${PORT}`)
+  console.log(`✅ Server app listening on port ${PORT}`)
 );
 
 
