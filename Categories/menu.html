@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/png" href="/favicon.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iwawe - Menu</title>
+<link rel="icon" href="favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* Reset */
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
+  body { background:#fff8f0; color:#333; }
+
+  /* Navbar */
+  .navbar { display:flex; justify-content:space-between; align-items:center; padding:15px 20px; background:#ff4d4d; color:#fff; position:relative; z-index:1000; }
+  .navbar a.logo { font-size:24px; font-weight:700; text-decoration:none; color:#fff; }
+  nav { display:flex; align-items:center; gap:20px; }
+  .nav-links { display:flex; gap:20px; list-style:none; }
+  .nav-links li a { color:#fff; text-decoration:none; font-weight:600; }
+  .cart-icon { display:inline-flex; align-items:center; gap:5px; text-decoration:none; color:inherit; }
+  .cart-badge { background:#fff; color:#ff4d4d; border-radius:50%; min-width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; font-size:12px; padding:0 6px; font-weight:bold; }
+  .nav-user { font-weight:600; color:#fff; white-space:nowrap; }
+  .login-status { font-size:12px; padding:4px 8px; border-radius:12px; white-space:nowrap; }
+  .menu-toggle { display:none; flex-direction:column; cursor:pointer; gap:5px; }
+  .menu-toggle span { width:25px; height:3px; background:#fff; border-radius:2px; transition:all 0.3s ease; }
+
+  @media(max-width:768px){
+    .nav-links { position:absolute; top:60px; right:0; background:#ff4d4d; flex-direction:column; width:100%; display:none; text-align:center; padding:20px 0; gap:15px; border-top:1px solid rgba(255,255,255,0.2); }
+    .nav-links li a { font-size:18px; }
+    .menu-toggle { display:flex; }
+    .nav-links.active { display:flex; animation:fadeIn 0.3s ease forwards; }
+    @keyframes fadeIn { from{opacity:0; transform:translateY(-10px);} to{opacity:1; transform:translateY(0);} }
+  }
+
+  /* Hero */
+  .hero { position:relative; background:url('images/fastfood/hero-bg.jpg') center/cover no-repeat; height:250px; display:flex; align-items:center; justify-content:center; text-align:center; color:#fff; overflow:hidden; margin-bottom:20px; }
+  .hero::before { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1; }
+  .hero div { position:relative; z-index:2; }
+  .hero h1 { font-size:2.5rem; font-weight:700; color:#ffdd59; text-shadow:2px 2px 8px rgba(0,0,0,0.7); margin-bottom:10px; }
+  .hero p { font-size:1.2rem; color:#fff; text-shadow:1px 1px 5px rgba(0,0,0,0.6); }
+
+  /* Category Section Hero */
+  .category-hero { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:20px; padding:0 20px; margin-bottom:30px; }
+  .category-card { position:relative; height:120px; border-radius:15px; overflow:hidden; cursor:pointer; transition:transform 0.3s, box-shadow 0.3s; }
+  .category-card img { width:100%; height:100%; object-fit:cover; filter:brightness(0.7); transition:all 0.3s; }
+  .category-card h3 { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); color:#fff; font-size:1.2rem; font-weight:700; text-shadow:1px 1px 6px rgba(0,0,0,0.7); z-index:2; }
+  .category-card:hover { transform:translateY(-5px); box-shadow:0 6px 15px rgba(0,0,0,0.2); }
+  .category-card:hover img { filter:brightness(0.6); }
+
+  /* Tabs */
+  .tabs { display:flex; justify-content:center; gap:15px; margin:0 20px 30px 20px; flex-wrap:wrap; }
+  .tab { background:#fff; padding:10px 20px; border-radius:25px; cursor:pointer; font-weight:600; box-shadow:0 2px 8px rgba(0,0,0,0.1); transition:all 0.3s; }
+  .tab.active { background:#ff4d4d; color:#fff; }
+
+  /* Product grid */
+  .products { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; padding:20px; margin-bottom:40px; }
+  .product-card { background:#fff; border-radius:15px; padding:15px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.2s; }
+  .product-card:hover { transform:translateY(-5px); }
+  .product-card img { width:150px; height:150px; object-fit:cover; border-radius:10px; margin-bottom:10px; }
+  .product-card h4 { font-size:18px; margin:10px 0; color:#333; }
+  .product-card p { font-weight:bold; color:#ff4d4d; font-size:16px; margin:8px 0; }
+  .product-card button { background:#ff4d4d; color:#fff; border:none; padding:10px 16px; border-radius:25px; cursor:pointer; transition:background 0.3s; font-weight:600; }
+  .product-card button:hover { background:#e63939; }
+
+  /* Cart */
+  .cart { max-width:400px; margin:20px auto; background:#fff; padding:20px; border-radius:15px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+  .cart h3 { text-align:center; margin-bottom:15px; }
+  .cart ul { list-style:none; margin-bottom:15px; }
+  .cart ul li { margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; gap:5px; }
+  .cart button { padding:5px 10px; border-radius:5px; border:none; cursor:pointer; background:#ff4d4d; color:#fff; }
+  .cart button:hover { background:#e63939; }
+
+  /* WhatsApp button */
+  .whatsapp-btn { position:fixed; bottom:20px; right:20px; background:#25D366; color:#fff; padding:15px 20px; border-radius:50px; font-weight:bold; box-shadow:0 4px 12px rgba(0,0,0,0.3); cursor:pointer; display:flex; align-items:center; gap:10px; z-index:1000; }
+  .whatsapp-btn:hover { background:#128c7e; }
+
+  /* Our Menu button */
+  .our-menu-btn { background:#ff4d4d; color:#fff; border:none; padding:12px 30px; border-radius:25px; font-size:1rem; font-weight:600; cursor:pointer; transition:background 0.3s; margin-top:15px; }
+  .our-menu-btn:hover { background:#e63939; }
+.nav-user {
+  font-weight: 600;
+  font-size: 0;
+  color: #333;
+  display: none;
+}
+/* Let Change Some */
+/* Video Hero */
+.video-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.video-hero video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* Dark overlay */
+.video-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 1;
+}
+
+.video-hero .hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<header>
+  <div class="navbar">
+    <a href="/index.html" class="logo">Iwawe</a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/menu.html">Menu</a></li>
+        <li><a href="/order-history.html">Orders</a></li>
+        <li><a href="/Userloginpage.html">Account</a></li>
+      </ul>
+      <a href="/Cart33.html" class="cart-icon" aria-label="Cart">
+        <img src="/images/New cart icon.png" width="30" height="30" alt="Cart">
+        <span id="cartCount" class="cart-badge" aria-live="polite">0</span>
+      </a>
+      <span id="navUser" class="nav-user">Guest</span>
+      <span id="loginStatus" class="login-status"></span>
+    </nav>
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</header>
+
+<!-- Hero -->
+<div class="hero video-hero">
+  <video autoplay muted loop playsinline>
+    <source src="/Categories/food-bg.mp4" type="video/mp4">
+  </video>
+
+  <div class="hero-content">
+    <h1>Our Delicious Menu</h1>
+    <p>Choose your favorites and order instantly!</p>
+  </div>
+</div>
+
+
+
+<!-- Category Section Hero -->
+<div class="category-hero">
+  <div class="category-card" data-category="burger" onclick="scrollToCategory('burger')">
+    <img src="/Categories/Categories-photo/Burger cat.jpg" alt="Burgers">
+    <h3>Burgers</h3>
+  </div>
+  <div class="category-card" data-category="drink" onclick="scrollToCategory('drink')">
+    <img src="/Categories/Categories-photo/Drinks cat.jpg" alt="Drinks">
+    <h3>Drinks</h3>
+  </div>
+  <div class="category-card" data-category="side" onclick="scrollToCategory('side')">
+    <img src="/Categories/Categories-photo/Sides cat.jpg" alt="Sides">
+    <h3>Sides</h3>
+  </div>
+  <div class="category-card" data-category="dessert" onclick="scrollToCategory('dessert')">
+    <img src="/Categories/Categories-photo/dessert cat.jpg" alt="Desserts">
+    <h3>Desserts</h3>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <div class="tab active" data-category="all">All</div>
+  <div class="tab" data-category="burger">Burgers</div>
+  <div class="tab" data-category="drink">Drinks</div>
+  <div class="tab" data-category="side">Sides</div>
+  <div class="tab" data-category="dessert">Desserts</div>
+</div>
+
+<!-- Products -->
+<div class="products" id="productsGrid"></div>
+
+<!-- Cart -->
+<div class="cart">
+  <h3>Your Cart</h3>
+  <ul id="cartItems"></ul>
+  <p><strong>Total:</strong> <span id="total">0</span> RWF</p>
+  <button onclick="placeOrder()">Place Order</button>
+</div>
+
+<!-- WhatsApp Order Button -->
+<button class="whatsapp-btn" onclick="sendOrderToWhatsApp()">
+  📱 Order via WhatsApp
+</button>
+
+<script>
+/* Mobile menu toggle */
+function toggleMenu() { document.querySelector('.nav-links').classList.toggle('active'); }
+
+/* Cart functions */
+function getCartKey() { const user = localStorage.getItem("loggedInUserId"); return user ? `cart_${user}` : "guest_cart"; }
+function loadCart() { return JSON.parse(localStorage.getItem(getCartKey())) || []; }
+function updateCart() {
+  const cartList = document.getElementById("cartItems");
+  const totalEl = document.getElementById("total");
+  const cart = loadCart();
+  cartList.innerHTML = "";
+  let total = 0;
+  cart.forEach((item,index)=>{
+    total += item.price * item.qty;
+    cartList.innerHTML += `<li>${item.name} x ${item.qty} = ${item.price*item.qty} RWF
+      <button onclick="changeQty(${index},-1)">➖</button>
+      <button onclick="changeQty(${index},1)">➕</button>
+      <button onclick="removeItem(${index})">❌</button>
+    </li>`;
+  });
+  totalEl.textContent = total;
+  updateCartCount();
+}
+function updateCartCount() {
+  const cartKey = getCartKey();
+  const cartCountEl = document.getElementById("cartCount");
+
+  if (!cartCountEl) return;
+
+  if (!cartKey) {
+    cartCountEl.textContent = 0;
+    return;
+  }
+
+  const cart = loadCart();
+  const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+  cartCountEl.textContent = totalQty;
+}
+function addToCart(name,price){
+  const key = getCartKey();
+  let cart = JSON.parse(localStorage.getItem(key)) || [];
+  const exist = cart.find(i=>i.name===name);
+  if(exist) exist.qty++;
+  else cart.push({name,price,qty:1});
+  localStorage.setItem(key, JSON.stringify(cart));
+  updateCart();
+}
+function changeQty(index,delta){
+  const cart = loadCart();
+  cart[index].qty += delta;
+  if(cart[index].qty < 1) cart[index].qty = 1;
+  localStorage.setItem(getCartKey(), JSON.stringify(cart));
+  updateCart();
+}
+function removeItem(index){
+  const cart = loadCart();
+  cart.splice(index,1);
+  localStorage.setItem(getCartKey(), JSON.stringify(cart));
+  updateCart();
+}
+function placeOrder(){
+  const cart = loadCart();
+  if(cart.length === 0) { alert("Cart is empty"); return; }
+  localStorage.setItem("pendingOrder", JSON.stringify(cart));
+  window.location.href="/checkout.html";
+}
+function sendOrderToWhatsApp(){
+  const cart = loadCart();
+  if(cart.length === 0) { alert("Cart is empty"); return; }
+  let msg = "Hello, I want to order:%0A";
+  let total = 0;
+  cart.forEach(i => { msg += `${i.name} x ${i.qty} = ${i.price*i.qty} RWF%0A`; total += i.price*i.qty; });
+  msg += `%0ATotal: ${total} RWF`;
+  window.open(`https://wa.me/250781106751?text=${msg}`,"_blank");
+}
+
+/* Products */
+const productsData=[
+  {name:"Classic Burger",price:1200,img:"/images/fastfood/burger.png",category:"burger"},
+  {name:"Cheese Burger",price:1500,img:"/images/fastfood/cheeseburger.png",category:"burger"},
+  {name:"Fries Large",price:800,img:"/images/fastfood/fries.png",category:"side"},
+  {name:"Chicken Wings",price:2000,img:"/images/fastfood/wings.png",category:"side"},
+  {name:"Soda Drink",price:500,img:"/images/fastfood/soda.png",category:"drink"},
+  {name:"Pizza Slice",price:1800,img:"/images/fastfood/pizza.png",category:"side"},
+  {name:"Ice Cream",price:700,img:"/images/fastfood/icecream.png",category:"dessert"}
+];
+
+const productsGrid=document.getElementById("productsGrid");
+function loadProducts(category="all"){
+  productsGrid.innerHTML="";
+  productsData.filter(p=>category==="all"?true:p.category===category).forEach(p=>{
+    const div = document.createElement("div");
+    div.className = "product-card";
+    div.innerHTML = `<img src="${p.img}" alt="${p.name}">
+      <h4>${p.name}</h4>
+      <p>${p.price} RWF</p>
+      <button onclick="addToCart('${p.name}',${p.price})">Add to Cart</button>`;
+    productsGrid.appendChild(div);
+  });
+}
+loadProducts();
+
+/* Tabs */
+document.querySelectorAll(".tab").forEach(tab=>{
+  tab.addEventListener("click", ()=>{
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+    tab.classList.add("active");
+    loadProducts(tab.dataset.category);
+  });
+});
+
+/* Scroll to category from Category Hero */
+function scrollToCategory(category){
+  document.querySelectorAll(".tab").forEach(t=>{ t.classList.remove("active"); if(t.dataset.category===category) t.classList.add("active"); });
+  loadProducts(category);
+}
+
+/* Initial cart render */
+updateCart();
+/* Update user display on page load */
+document.addEventListener("DOMContentLoaded", function() {
+  const loggedInUser = localStorage.getItem("loggedInUserId");
+  const navUser = document.getElementById("navUser");
+  const status = document.getElementById("loginStatus");
+
+  if (loggedInUser) {
+    navUser.textContent = `Hello, ${loggedInUser}`;
+    status.textContent = "🟢 Logged in";
+    status.className = "login-status logged-in";
+  } else {
+    navUser.textContent = "Guest";
+    status.textContent = "🔴 Guest";
+    status.className = "login-status guest";
+  }
+
+  updateCartCount();
+});
+</script>
+
+</body>
+</html>
